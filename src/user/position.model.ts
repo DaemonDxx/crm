@@ -1,7 +1,8 @@
 import { Prop, Schema as SchemaDecorator, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 @SchemaDecorator()
-export class PositionModel {
+export class Position extends Document{
 
   @Prop({
     required: true
@@ -15,4 +16,4 @@ export class PositionModel {
 
 }
 
-export const PositionSchema = SchemaFactory.createForClass(PositionModel)
+export const PositionSchema = SchemaFactory.createForClass(Position)

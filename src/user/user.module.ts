@@ -3,8 +3,9 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DepartmentSchema } from './department.model';
-import { PositionModel, PositionSchema } from './position.model';
+import { Position, PositionSchema } from './position.model';
 import { UserSchema } from './user.model';
+import { InviteModule } from '../invite/invite.module';
 
 @Module({
   imports: [
@@ -12,9 +13,11 @@ import { UserSchema } from './user.model';
       {name: 'Department', schema: DepartmentSchema},
       {name: 'Position', schema: PositionSchema},
       {name: 'User', schema: UserSchema}
-    ])
+    ]),
+    InviteModule,
   ],
   providers: [UserService],
-  controllers: [UserController]
+  controllers: [UserController],
+  exports: [UserService]
 })
 export class UserModule {}

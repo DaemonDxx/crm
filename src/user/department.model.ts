@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 
 @Schema()
-class Department extends Document {
+export class Department extends Document {
 
   @Prop({
     required: true

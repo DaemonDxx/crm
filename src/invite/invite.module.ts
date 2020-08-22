@@ -11,6 +11,7 @@ import { InviteSchema } from './invite.model';
     ])
   ],
   controllers: [InviteController],
-  providers: [InviteService]
+  providers: [InviteService],
+  exports: [InviteService]
 })
 export class InviteModule {}

@@ -13,7 +13,7 @@ export class InviteController {
   @Post('/')
   @UsePipes(new InvitePipe())
   async createInvite(@Body() inviteCreateDTO: InviteCreateDto): Promise<Invite> {
-    return await this.inviteService.create(inviteCreateDTO, 'sdfsdf');
+    return await this.inviteService.create(inviteCreateDTO, '5f409d08e21518d675cbf747');
   }
 
 }

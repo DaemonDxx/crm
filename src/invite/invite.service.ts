@@ -18,4 +18,9 @@ export class InviteService {
     return invite.save();
   }
 
+  async getInviteById(id: string): Promise<Invite> {
+    const invite = await this.inviteModel.findById(id);
+    return invite?invite:null;
+  }
+
 }
