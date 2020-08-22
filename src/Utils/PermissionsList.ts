@@ -4,7 +4,8 @@ class PermissionList {
     public notification: string = 'notification',
     public admin: string = 'admin',
     public invite: string = 'invite',
-    public creator: string = 'creator'
+    public creator: string = 'creator',
+    public point: string = 'point',
   ) {
   }
 

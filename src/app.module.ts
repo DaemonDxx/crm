@@ -18,19 +18,19 @@ import { PointModule } from './point/point.module';
     //ToDo Брать адрес к бд из модуля настроек
     MongooseModule.forRoot('mongodb://localhost/crm'),
     AuthModule,
-    ClientsModule.register([
-      {
-        name: 'TEST_Service',
-        transport: Transport.RMQ,
-        options: {
-          urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: process.env.QUEUE || 'test',
-          queueOptions: {
-            durable: false
-          }
-        }
-      },
-    ]),
+    // ClientsModule.register([
+    //   {
+    //     name: 'TEST_Service',
+    //     transport: Transport.RMQ,
+    //     options: {
+    //       urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
+    //       queue: process.env.QUEUE || 'test',
+    //       queueOptions: {
+    //         durable: false
+    //       }
+    //     }
+    //   },
+    // ]),
     PointModule,
   ],
   controllers: [AppController],

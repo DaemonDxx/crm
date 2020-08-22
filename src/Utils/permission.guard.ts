@@ -15,6 +15,9 @@ export class PermissionGuard implements CanActivate {
   }
 
   validatePermissions(perHandler, perUser): boolean {
+    if (perUser.includes('creator')) {
+      return true;
+    }
     for (const i of perHandler) {
       if (!perUser.includes(i)) {
         throw new ForbiddenException('У вас недостаточно прав');
