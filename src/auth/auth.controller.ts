@@ -32,10 +32,4 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  @Get()
-  @UseGuards(AuthGuard())
-  async test() {
-    return "dsfsdf"
-  }
-
 }

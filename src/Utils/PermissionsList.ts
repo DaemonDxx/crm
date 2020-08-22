@@ -2,7 +2,9 @@ class PermissionList {
 
   constructor(
     public notification: string = 'notification',
-    public admin: string = 'admin'
+    public admin: string = 'admin',
+    public invite: string = 'invite',
+    public creator: string = 'creator'
   ) {
   }
 

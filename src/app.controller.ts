@@ -7,15 +7,13 @@ import { Permissions } from './Utils/permissions.decorator';
 
 @Controller()
 export class AppController {
+
   constructor(private readonly appService: AppService) {}
 
-
   @Get()
-  //Todo переработать добавление разрешений
   @Permissions(PermissionList.notification)
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
   getHello(@Req() req): string[] {
-    console.log(req.user);
     return PermissionList.getPermissionArray()
   }
 
