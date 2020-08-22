@@ -7,7 +7,7 @@ export class CreatePointPipe implements PipeTransform {
 
   transform(value: any, metadata: ArgumentMetadata): CreatePointDto {
     const result = value;
-    
+
     result.dateCheck = this.parseDate(value.dateCheck);
     result.lastDateCheck = this.parseDate(value.lastDateCheck);
 
