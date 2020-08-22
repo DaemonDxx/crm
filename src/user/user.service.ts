@@ -18,6 +18,10 @@ export class UserService {
   ) {
   }
 
+  async findUserByID(id: string): Promise<User> {
+    return this.userModel.findById(id).populate('department').populate('position').lean();
+  }
+
   async createUser(createUserDTO: CreateUserDto): Promise<User> {
         const info = await this.validateData(createUserDTO);
         const {position, invite, ...user} = createUserDTO;
@@ -54,6 +58,15 @@ export class UserService {
         position,
         permissions
       }
+  }
+
+  async validateUser(username: string, password: string): Promise<any> {
+      const user = await this.userModel.findOne({username}).populate('department').populate('position');
+      if (user && user.password === password) {
+        const {password, ...result} = user;
+        return result;
+      }
+      return null;
   }
 
 }

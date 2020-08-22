@@ -6,6 +6,7 @@ import { DepartmentSchema } from './department.model';
 import { Position, PositionSchema } from './position.model';
 import { UserSchema } from './user.model';
 import { InviteModule } from '../invite/invite.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
