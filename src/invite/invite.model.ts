@@ -1,6 +1,6 @@
 import { Document, Schema as SchemaT} from 'mongoose';
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
-import PermissionList from '../PermissionsList';
+import PermissionList from '../Utils/PermissionsList';
 
 @Schema()
 export class Invite extends Document {

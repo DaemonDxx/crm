@@ -16,4 +16,4 @@ class PermissionList {
 
 }
 
-export default PermissionList
+export default new PermissionList()

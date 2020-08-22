@@ -1,6 +1,6 @@
 import { Document, Schema } from 'mongoose';
 import { Prop, SchemaFactory, Schema as SchemaDecorator } from '@nestjs/mongoose';
-import PermissionList from '../PermissionsList';
+import PermissionList from '../Utils/PermissionsList';
 
 @SchemaDecorator()
 export class User extends Document {
