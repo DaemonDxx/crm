@@ -28,14 +28,22 @@ export class UserService {
         const {position, invite, ...user} = createUserDTO;
         const newUser = await new this.userModel(Object.assign(info, user)).save();
         const updateInvate = await this.closeInvite(invite, newUser);
-        return newUser.save();
+        try {
+          return await newUser.save();
+        } catch (e) {
+          throw new BadRequestException(e.message);
+        }
 
   }
 
   async closeInvite(inviteID: string, user:User): Promise<Invite> {
     const invite = await this.inviteService.getInviteById(inviteID);
     invite.userCreated = user._id;
-    return invite.save();
+    try {
+      return await invite.save();
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
   }
 
   async validateData(createUserDTO: CreateUserDto): Promise<any> {

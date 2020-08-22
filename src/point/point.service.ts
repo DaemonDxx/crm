@@ -21,7 +21,12 @@ export class PointService {
       }
     }
 
-    return new this.pointModel(createPointDTO).save();
+    try {
+      return await new this.pointModel(createPointDTO).save();
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+
 
   }
 

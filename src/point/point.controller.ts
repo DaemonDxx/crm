@@ -23,7 +23,6 @@ export class PointController {
     if (!point) {
       throw new BadRequestException(`Точка не сохранена ${createPointDTO.numberDevice}`);
     }
-
     return {}
   }
 
