@@ -6,6 +6,7 @@ import { Department } from './department.model';
 import { Position } from './position.model';
 import { CreateUserDto } from '../auth/createUser.dto';
 import { InviteService } from '../invite/invite.service';
+import { Invite } from '../invite/invite.model';
 
 @Injectable()
 export class UserService {
@@ -25,15 +26,26 @@ export class UserService {
   async createUser(createUserDTO: CreateUserDto): Promise<User> {
         const info = await this.validateData(createUserDTO);
         const {position, invite, ...user} = createUserDTO;
-        const newUser = new this.userModel(Object.assign(info, user));
+        const newUser = await new this.userModel(Object.assign(info, user)).save();
+        const updateInvate = await this.closeInvite(invite, newUser);
         return newUser.save();
 
+  }
+
+  async closeInvite(inviteID: string, user:User): Promise<Invite> {
+    const invite = await this.inviteService.getInviteById(inviteID);
+    invite.userCreated = user._id;
+    return invite.save();
   }
 
   async validateData(createUserDTO: CreateUserDto): Promise<any> {
       const invite = await this.inviteService.getInviteById(createUserDTO.invite);
       if (!invite) {
         throw new BadRequestException('Ваш инвайт код не действителен');
+      }
+
+      if (invite.userCreated) {
+        throw new BadRequestException('Данный инвайт уже использован');
       }
 
       const department = await this.departmentModel.findById(invite.department);

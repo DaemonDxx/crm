@@ -35,6 +35,7 @@ export class Invite extends Document {
   })
   department: SchemaT.Types.ObjectId
 
+
 }
 
 export const InviteSchema = SchemaFactory.createForClass(Invite);
