@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27016:27017
+    volumes:
+      - ./db:/data/db
+
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+    - 15672:15672
