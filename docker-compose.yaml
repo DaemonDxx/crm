@@ -5,9 +5,9 @@ services:
   mongo:
     image: mongo:latest
     ports:
-      - 27016:27017
+      - 27017:27017
     volumes:
-      - ./db:/data/db
+      - ./db_test/db:/data/db
 
   rabbit:
     image: rabbitmq:3-management
