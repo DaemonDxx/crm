@@ -17,8 +17,12 @@ export class NotificationService {
 
   async createNotification(createNotifyDTO: CreateNotificationDto): Promise<Notification> {
     try {
-      const notification = await new this.notifyModel(createNotifyDTO);
-      return await notification.save();
+      const {_id, number, ...query} = createNotifyDTO;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const notification = await this.notifyModel.findOneAndUpdate({number: number}, query, {upsert: true, new: true});
+      await this.reservedNumberModel.deleteOne({number: notification.number});
+      return notification;
     } catch (e) {
       throw new BadRequestException(e.message);
     }

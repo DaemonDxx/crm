@@ -17,7 +17,9 @@ import { NotificationModule } from './notification/notification.module';
     InviteModule,
     UserModule,
     //ToDo Брать адрес к бд из модуля настроек
-    MongooseModule.forRoot('mongodb://localhost/crm'),
+    MongooseModule.forRoot('mongodb://localhost/crm', {
+      useFindAndModify: true
+    }),
     AuthModule,
     // ClientsModule.register([
     //   {

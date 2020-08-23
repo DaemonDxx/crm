@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Post,  UseGuards, UsePipes } from '@nestjs/common';
 import { NotificationService } from './notification.service';
 import { CreateNotificationDto } from './createNotification.dto';
 import { Notification } from './notification.model';
@@ -13,6 +13,7 @@ export class NotificationController {
 
   constructor(private notifyService: NotificationService) {
   }
+
 
   @Post()
   @Permissions(PermissionsList.notification, PermissionsList.creator)

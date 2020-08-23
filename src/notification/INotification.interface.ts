@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 
 
 export interface INotificationInterface {
-
+  _id: string
   points: string[]
   type: string
   number: number
