@@ -4,7 +4,6 @@ import { PointService } from './point.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PointSchema } from './point.model';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [

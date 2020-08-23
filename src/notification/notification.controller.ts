@@ -24,8 +24,14 @@ export class NotificationController {
   }
 
   @Get('/number')
+  @Permissions(PermissionsList.notification, PermissionsList.creator)
+  @UseGuards(AuthGuard('jwt'), PermissionGuard)
   async numberReserved(): Promise<number> {
-
+    const number = await this.notifyService.findOldReservedNumbers();
+    if (!number) {
+      return await this.notifyService.reservingNumber();
+    }
+    return number;
   }
 
 }
