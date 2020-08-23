@@ -2,17 +2,19 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateNotificationDto } from './createNotification.dto';
 import { Notification } from './notification.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { ReservedNumber } from './reservedNumber.model';
 import { retrieveCols } from '@nestjs/cli/actions';
+import { Point } from '../point/point.model';
 
 @Injectable()
 export class NotificationService {
 
   constructor(
     @InjectModel('Notification') private notifyModel: Model<Notification>,
-    @InjectModel('ReservedNumber') private reservedNumberModel: Model<ReservedNumber>
-  ) {
+    @InjectModel('ReservedNumber') private reservedNumberModel: Model<ReservedNumber>,
+    @InjectModel('Point') private pointModel: Model<Point>)
+   {
   }
 
   async createNotification(createNotifyDTO: CreateNotificationDto): Promise<Notification> {
@@ -24,7 +26,9 @@ export class NotificationService {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const notification = await this.notifyModel.findOneAndUpdate({number: number}, query, {upsert: true, new: true});
+      await this.saveNotificationInPoint(notification.points, notification._id);
       await this.reservedNumberModel.deleteOne({number: notification.number});
+
       return notification;
     } catch (e) {
       throw new BadRequestException(e.message);
@@ -64,6 +68,13 @@ export class NotificationService {
       throw new BadRequestException(e.message);
     }
 
+  }
+
+  async saveNotificationInPoint(arrayPoints: Schema.Types.ObjectId[], notifyId: Schema.Types.ObjectId) {
+    for (const point of arrayPoints) {
+      const result = await this.pointModel.findByIdAndUpdate(point, {notification: notifyId});
+      console.log(result);
+    }
   }
 
   getDateOffsetHour(hour: number): Date {

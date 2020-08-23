@@ -1,9 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema as SchemaDecorator, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Schema } from 'mongoose';
 import Area from '../Utils/area.list';
 
 
-@Schema()
+@SchemaDecorator()
 export class Point extends Document {
 
   @Prop({
@@ -65,6 +65,11 @@ export class Point extends Document {
     required: true
   })
   numberDevice: string
+
+  @Prop({
+    ref: 'Notification'
+  })
+  notification: Schema.Types.ObjectId
 
 }
 

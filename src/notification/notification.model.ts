@@ -6,7 +6,10 @@ import {Schema } from 'mongoose';
 export class Notification extends Document {
 
   @Prop({
-    ref: 'Point'
+    type: [{
+      ref: 'Point',
+      type: Schema.Types.ObjectId
+    }]
   })
   points: Schema.Types.ObjectId[]
 
