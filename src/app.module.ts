@@ -10,6 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PointModule } from './point/point.module';
 import { NotificationModule } from './notification/notification.module';
 import { TaskModule } from './task/task.module';
+import { ResultCheckModule } from './result-check/result-check.module';
 
 
 @Module({
@@ -38,6 +39,7 @@ import { TaskModule } from './task/task.module';
     PointModule,
     NotificationModule,
     TaskModule,
+    ResultCheckModule,
   ],
   controllers: [AppController],
   providers: [AppService],

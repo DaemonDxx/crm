@@ -12,10 +12,7 @@ export class TaskService {
   }
 
   async getTaskById(id: string): Promise<Task> {
-    return this.taskModel.findById(id)
-      .populate('members', Fields.User)
-      .populate('points')
-      .populate('head', Fields.User);
+    return this.taskModel.findById(id);
   }
 
   async createTask(createTaskDTO: CreateTaskDto): Promise<Task> {

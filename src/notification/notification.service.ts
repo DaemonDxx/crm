@@ -4,7 +4,6 @@ import { Notification } from './notification.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 import { ReservedNumber } from './reservedNumber.model';
-import { retrieveCols } from '@nestjs/cli/actions';
 import { Point } from '../point/point.model';
 
 @Injectable()
