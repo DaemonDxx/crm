@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PointModule } from './point/point.module';
 import { NotificationModule } from './notification/notification.module';
+import { TaskModule } from './task/task.module';
 
 
 @Module({
@@ -36,6 +37,7 @@ import { NotificationModule } from './notification/notification.module';
     // ]),
     PointModule,
     NotificationModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],

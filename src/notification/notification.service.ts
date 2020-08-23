@@ -18,6 +18,9 @@ export class NotificationService {
   async createNotification(createNotifyDTO: CreateNotificationDto): Promise<Notification> {
     try {
       const {_id, number, ...query} = createNotifyDTO;
+
+      //Todo С этим нужно что то сделать
+
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const notification = await this.notifyModel.findOneAndUpdate({number: number}, query, {upsert: true, new: true});
