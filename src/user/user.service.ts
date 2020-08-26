@@ -89,4 +89,8 @@ export class UserService {
       return null;
   }
 
+  async findAllPosition(): Promise<any> {
+    return this.positionModel.find().lean();
+  }
+
 }
