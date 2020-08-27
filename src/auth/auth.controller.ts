@@ -16,9 +16,11 @@ export class AuthController {
 
   //Todo сделать pipe на трансформацию логина и пароля
   @Post('/signup')
-  async signup(@Body() createUserDTO: CreateUserDto): Promise<User> {
+  async signup(@Body() createUserDTO: CreateUserDto): Promise<any> {
     try {
-      return await this.userService.createUser(createUserDTO);
+      await this.userService.createUser(createUserDTO);
+      return {ok: true}
+
     } catch (e) {
       throw new BadRequestException(e.message);
     }
