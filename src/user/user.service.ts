@@ -93,4 +93,13 @@ export class UserService {
     return this.positionModel.find().lean();
   }
 
+  async findAllUsersInDepartment(departmentID):Promise<any> {
+    const users = await this.userModel.find(
+      {department: departmentID},
+      {firstName: 1, lastName: 1, thirdName: 1, positions: 1})
+      .populate('position')
+      .lean()
+    return users;
+  }
+
 }

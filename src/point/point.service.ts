@@ -30,6 +30,12 @@ export class PointService {
 
   }
 
+  async findPointsByDate(date: Date): Promise<any> {
+    const points = await this.pointModel.find({dateCheck: date})
+      .populate('notification')
+      .lean();
+    return points;
+  }
 
 
 }

@@ -20,4 +20,13 @@ export class UserController {
     return res;
   }
 
+
+  @Get('/department')
+  @UseGuards(AuthGuard('jwt'))
+  async getAllUserInDepartment (@Req() req): Promise<any> {
+    return this.userService.findAllUsersInDepartment(req.user.department._id);
+  }
+
+
+
 }

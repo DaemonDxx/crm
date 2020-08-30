@@ -61,6 +61,7 @@ export class Point extends Document {
   @Prop()
   lastDateCheck: Date;
 
+
   @Prop({
     required: true
   })
