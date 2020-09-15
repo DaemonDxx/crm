@@ -37,5 +37,10 @@ export class PointService {
     return points;
   }
 
+  async findPointByName(name: string): Promise<any> {
+    const points = await this.pointModel.find({name, notification: {$exists: false}}).lean();
+    return points;
+  }
+
 
 }

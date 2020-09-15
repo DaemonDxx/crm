@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateNotificationDto } from './createNotification.dto';
 import { Notification } from './notification.model';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
+import { Model, Schema, Types } from 'mongoose';
 import { ReservedNumber } from './reservedNumber.model';
 import { Point } from '../point/point.model';
 
@@ -79,6 +79,18 @@ export class NotificationService {
   getDateOffsetHour(hour: number): Date {
     const nowDate = new Date();
     return new Date(nowDate.setHours(nowDate.getHours()-hour));
+  }
+
+  async findNotificationByPointID(pointID: string): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const notify = await this.notifyModel.findOne({'points':
+        {$in: [pointID]}
+    }).populate('points').lean();
+
+
+
+    return notify;
   }
 
 }
