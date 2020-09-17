@@ -61,6 +61,11 @@ export class Notification extends Document {
   @Prop()
   description: string
 
+  @Prop({
+    required: true,
+    enum: ['planned, unplanned']
+  })
+  plan: string
 
 }
 

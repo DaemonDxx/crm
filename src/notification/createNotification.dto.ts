@@ -16,5 +16,6 @@ export class CreateNotificationDto implements INotificationInterface {
   to: string;
   type: string;
   _id: string;
+  plan: string;
 
 }

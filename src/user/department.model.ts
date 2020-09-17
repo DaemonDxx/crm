@@ -14,6 +14,11 @@ export class Department extends Document {
   })
   description: string
 
+  @Prop({
+    required: true
+  })
+  shortName: string
+
 }
 
 export const DepartmentSchema = SchemaFactory.createForClass(Department)
