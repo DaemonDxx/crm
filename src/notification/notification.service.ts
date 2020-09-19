@@ -5,6 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema, Types } from 'mongoose';
 import { ReservedNumber } from './reservedNumber.model';
 import { Point } from '../point/point.model';
+import { User } from '../user/user.model';
+import { not } from 'rxjs/internal-compatibility';
 
 @Injectable()
 export class NotificationService {
@@ -12,19 +14,20 @@ export class NotificationService {
   constructor(
     @InjectModel('Notification') private notifyModel: Model<Notification>,
     @InjectModel('ReservedNumber') private reservedNumberModel: Model<ReservedNumber>,
-    @InjectModel('Point') private pointModel: Model<Point>)
+    @InjectModel('Point') private pointModel: Model<Point>,
+    @InjectModel('User') private userModel: Model<User> )
    {
   }
 
   async createNotification(createNotifyDTO: CreateNotificationDto): Promise<Notification> {
     try {
       const {_id, number, ...query} = createNotifyDTO;
-
+      query.dateSend = new Date();
       //Todo С этим нужно что то сделать
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const notification = await this.notifyModel.findOneAndUpdate({number: number}, query, {upsert: true, new: true});
+      const notification = await this.notifyModel.findOneAndUpdate({number}, query, {upsert: true, new: true});
       await this.saveNotificationInPoint(notification.points, notification._id);
       await this.reservedNumberModel.deleteOne({number: notification.number});
 
@@ -87,6 +90,17 @@ export class NotificationService {
     const notify = await this.notifyModel.findOne({'points':
         {$in: [pointID]}
     }).populate('points').lean();
+
+    if (!notify) {
+      return
+    }
+
+    const {password, username, permissions, ...from} = await this.userModel.findById(notify.from)
+      .populate('department')
+      .populate('position')
+      .lean();
+    return Object.assign({}, notify, {from});
+
 
 
 

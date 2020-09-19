@@ -8,9 +8,3 @@ services:
       - 27017:27017
     volumes:
       - ./db_test/db:/data/db
-
-  rabbit:
-    image: rabbitmq:3-management
-    ports:
-    - 15672:15672
-    - 5672:5672

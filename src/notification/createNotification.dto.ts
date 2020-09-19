@@ -7,7 +7,6 @@ export class CreateNotificationDto implements INotificationInterface {
   description: string;
   email: string[];
   from: string;
-  fromEmail: string;
   number: number;
   phone: string;
   points: string[];
@@ -16,6 +15,7 @@ export class CreateNotificationDto implements INotificationInterface {
   to: string;
   type: string;
   _id: string;
-  plan: string;
+  typePlan: string;
+
 
 }

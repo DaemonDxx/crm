@@ -65,7 +65,7 @@ export class Notification extends Document {
     required: true,
     enum: ['planned, unplanned']
   })
-  plan: string
+  typePlan: string
 
 }
 

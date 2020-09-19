@@ -11,10 +11,8 @@ export interface INotificationInterface {
   email: string[]
   from: string
   to: string
-  dateSend: Date
   time: string
-  fromEmail: string
   status: string
   description: string
-
+  typePlan: string
 }

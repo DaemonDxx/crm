@@ -23,19 +23,6 @@ import { ResultCheckModule } from './result-check/result-check.module';
       useFindAndModify: true
     }),
     AuthModule,
-    // ClientsModule.register([
-    //   {
-    //     name: 'TEST_Service',
-    //     transport: Transport.RMQ,
-    //     options: {
-    //       urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-    //       queue: process.env.QUEUE || 'test',
-    //       queueOptions: {
-    //         durable: false
-    //       }
-    //     }
-    //   },
-    // ]),
     PointModule,
     NotificationModule,
     TaskModule,
