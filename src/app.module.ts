@@ -11,6 +11,8 @@ import { PointModule } from './point/point.module';
 import { NotificationModule } from './notification/notification.module';
 import { TaskModule } from './task/task.module';
 import { ResultCheckModule } from './result-check/result-check.module';
+import { EventsModule } from './events/events.module';
+import { QueueModule } from './queue/queue.module';
 
 
 @Module({
@@ -27,6 +29,8 @@ import { ResultCheckModule } from './result-check/result-check.module';
     NotificationModule,
     TaskModule,
     ResultCheckModule,
+    EventsModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService],

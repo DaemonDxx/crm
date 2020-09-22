@@ -4,6 +4,8 @@ import { Model } from 'mongoose';
 import { Task } from './task.model';
 import { CreateTaskDto } from './createTask.dto';
 import { Fields } from '../Utils/showModelsOptions';
+import { QueueService } from '../queue/queue.service';
+import NewTaskEvent from '../events/classes/NewTaskEvent';
 
 @Injectable()
 export class TaskService {
@@ -16,24 +18,23 @@ export class TaskService {
   }
 
   async createTask(createTaskDTO: CreateTaskDto): Promise<Task> {
-    const {_id, ...query} = createTaskDTO;
-    //ToDO С этим нужно что то сделать, уже дважды
-    try{
-      let task;
-      if (_id) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        task = await this.taskModel.findOneAndUpdate({_id: _id}, query, {upsert: true, new: true});
-      } else {
-        query.number = await this.getNextNumberTask();
-        task = await new this.taskModel(query).save();
-      }
+    createTaskDTO.number = await this.getNextNumberTask();
+    const task = await new this.taskModel(createTaskDTO).save();
+    task.populate('head')
+        .populate('members')
+        .populate('car')
+        .populate('points');
+    return task;
+  }
 
-      return this.getTaskById(task._id);
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
 
+  async updateTask(createTaskDTO: CreateTaskDto): Promise<Task> {
+    const updateTask  = await this.taskModel.findByIdAndUpdate(createTaskDTO._id, createTaskDTO)
+      .populate('head')
+      .populate('members')
+      .populate('car')
+      .populate('points');
+    return updateTask;
   }
 
   async getNextNumberTask(): Promise<number> {

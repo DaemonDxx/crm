@@ -1,13 +1,14 @@
+import {Schema} from 'mongoose';
 
 export class CreateTaskDto {
 
   _id: string
-  points: string[]
-  head: string
+  points: Schema.Types.ObjectId[]
+  head: Schema.Types.ObjectId
   number: number
   date: Date
-  car: string
+  car: Schema.Types.ObjectId
   status: string
-  members: string[]
+  members: Schema.Types.ObjectId[]
 
 }
