@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Req, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
 import { Task } from './task.model';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './createTask.dto';
@@ -11,6 +11,8 @@ import EventPayloadDTO from '../events/classes/EventPayloadDTO';
 import { ITaskInterface } from './task.interface';
 import { TaskTemplate } from '../report/Template/TaskTemplate';
 import { XLSXReportDriver } from '../report/Driver/XLSXReportDriver';
+import { ParseDatePipe } from '../Utils/parseDate.pipe';
+import * as path from 'path';
 
 @Controller('task')
 export class TaskController {
@@ -36,12 +38,12 @@ export class TaskController {
     return await this.taskService.updateTask(createTaskDto);
   }
 
-  @Get('/test')
-  async getHello(@Req() req): Promise<string> {
-    const driver = new XLSXReportDriver();
-    const n: ITaskInterface = await this.taskService.getTaskById('5f6b5773f681c91dec1ce69a');
-    await driver.setTemplate(new TaskTemplate(n));
-    const link = await driver.generateReport();
-    return link;
+  @Get()
+  @Permissions(PermissionsList.creator)
+  @UseGuards(AuthGuard('jwt'), PermissionGuard)
+  async getTaskByDate(@Query('date', ParseDatePipe) date: any, @Req() req) {
+      const task = await this.taskService.getTaskByDayAndUserID(date, req.user._id);
+      return task;
   }
+
 }
