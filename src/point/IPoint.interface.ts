@@ -16,4 +16,5 @@ export interface IPointInterface {
   phone: string[];
   lastDateCheck: Date;
   numberDevice: string;
+
 }

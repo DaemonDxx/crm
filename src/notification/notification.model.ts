@@ -67,6 +67,11 @@ export class Notification extends Document {
   })
   typePlan: string
 
+  @Prop({
+    required: true,
+    ref: 'User'
+  })
+  head: Schema.Types.ObjectId
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

@@ -13,6 +13,14 @@ export class Task extends Document {
   points: Schema.Types.ObjectId[]
 
   @Prop({
+    type: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }]
+  })
+  members: Schema.Types.ObjectId[]
+
+  @Prop({
     ref: 'User',
     required: true
   })
@@ -39,13 +47,6 @@ export class Task extends Document {
   })
   status: string
 
-  @Prop({
-    type: [{
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }]
-  })
-  members: Schema.Types.ObjectId[]
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

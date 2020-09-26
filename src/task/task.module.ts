@@ -9,8 +9,7 @@ import { QueueModule } from '../queue/queue.module';
 @Module({
   imports: [MongooseModule.forFeature([
     {name: 'Task', schema: TaskSchema}
-  ]),
-    QueueModule
+  ])
   ],
   controllers: [TaskController],
   providers: [TaskService]

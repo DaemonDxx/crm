@@ -1,15 +1,16 @@
 import BasicEvent from './BasicEvent';
 import RoutingKeyMap from '../RoutingKeyMap';
+import EventPayloadDTO from './EventPayloadDTO';
 
 class NewTaskEvent extends BasicEvent {
 
   description: string;
   routingKey: string;
   exchange: string;
-  _payload: any;
+  payload: EventPayloadDTO;
 
 
-  constructor(payload: any) {
+  constructor(payload: EventPayloadDTO) {
     super(payload);
     this.description = 'Создано новое задание';
     this.exchange = 'work';

@@ -1,4 +1,6 @@
 
+import EventPayloadDTO from './EventPayloadDTO';
+
 interface IEvent {
 
   //Для rabbitmq
@@ -6,7 +8,7 @@ interface IEvent {
   routingKey: string;
 
   description: string
-  _payload: any;
+  payload: EventPayloadDTO;
 
   toString(): string;
 

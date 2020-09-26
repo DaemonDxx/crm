@@ -19,6 +19,9 @@ import { Permissions } from '../Utils/permissions.decorator';
 import PermissionsList from '../Utils/PermissionsList';
 import { NotifyPipe } from './notify.pipe';
 import { not } from 'rxjs/internal-compatibility';
+import { DOCXReportDriver } from '../report/Driver/DOCXReportDriver';
+import { NotificationPhoneTemplate } from '../report/Template/NotificationPhoneTemplate';
+import { INotificationInterface } from './INotification.interface';
 
 @Controller('/notification')
 export class NotificationController {
@@ -57,6 +60,15 @@ export class NotificationController {
       return await this.notifyService.reservingNumber();
     }
     return number;
+  }
+
+  @Get('/test')
+  async getHello(@Req() req): Promise<string> {
+    const driver = new DOCXReportDriver();
+    const n: INotificationInterface = await this.notifyService.findNotificationByPointID('5f49fda75d6ea732ed8535b6');
+    await driver.setTemplate(new NotificationPhoneTemplate(n));
+    const link = await driver.generateReport();
+    return link;
   }
 
 }

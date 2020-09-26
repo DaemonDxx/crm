@@ -13,6 +13,7 @@ import { TaskModule } from './task/task.module';
 import { ResultCheckModule } from './result-check/result-check.module';
 import { EventsModule } from './events/events.module';
 import { QueueModule } from './queue/queue.module';
+import { ReportModule } from './report/report.module';
 
 
 @Module({
@@ -29,8 +30,7 @@ import { QueueModule } from './queue/queue.module';
     NotificationModule,
     TaskModule,
     ResultCheckModule,
-    EventsModule,
-    QueueModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,15 +1,15 @@
 import IEvent from './IEvent';
+import EventPayloadDTO from './EventPayloadDTO';
 
 class BasicEvent implements IEvent {
 
-  _payload: any;
+  payload: EventPayloadDTO;
   exchange: string;
   routingKey: string;
   description: string;
 
-  constructor(payload: any) {
-    this._payload = payload;
-    this._payload.dateAt = new Date();
+  constructor(payload: EventPayloadDTO) {
+    this.payload = payload;
   }
 
   toString(): string {

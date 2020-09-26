@@ -7,8 +7,6 @@ export class TaskPipe implements PipeTransform {
 
   transform(value: any, metadata: ArgumentMetadata): CreateTaskDto {
       const result = value;
-      result.points = ParseArray(value.points);
-      result.members = ParseArray(value.members);
       result.date = ParseDate(value.date);
 
       return result;

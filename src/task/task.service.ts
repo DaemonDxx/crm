@@ -6,6 +6,7 @@ import { CreateTaskDto } from './createTask.dto';
 import { Fields } from '../Utils/showModelsOptions';
 import { QueueService } from '../queue/queue.service';
 import NewTaskEvent from '../events/classes/NewTaskEvent';
+import { ITaskInterface } from './task.interface';
 
 @Injectable()
 export class TaskService {
@@ -13,17 +14,23 @@ export class TaskService {
   constructor(@InjectModel('Task') private taskModel: Model<Task>) {
   }
 
-  async getTaskById(id: string): Promise<Task> {
-    return this.taskModel.findById(id);
+  async getTaskById(id: string): Promise<any> {
+    const task = await this.taskModel.findById(id)
+      .populate('head')
+      .populate('members')
+      .populate('points')
+      .lean();
+    return task;
   }
 
   async createTask(createTaskDTO: CreateTaskDto): Promise<Task> {
     createTaskDTO.number = await this.getNextNumberTask();
     const task = await new this.taskModel(createTaskDTO).save();
-    task.populate('head')
-        .populate('members')
-        .populate('car')
-        .populate('points');
+    await this.taskModel.populate(task, [
+      {path: 'head', select: ['firstName', 'lastName', 'thirdName', '_id']},
+      {path: 'members', select: ['firstName', 'lastName', 'thirdName', '_id']},
+      {path: 'points'}
+    ]);
     return task;
   }
 
@@ -32,7 +39,6 @@ export class TaskService {
     const updateTask  = await this.taskModel.findByIdAndUpdate(createTaskDTO._id, createTaskDTO)
       .populate('head')
       .populate('members')
-      .populate('car')
       .populate('points');
     return updateTask;
   }

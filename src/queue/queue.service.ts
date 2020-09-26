@@ -10,7 +10,7 @@ export class QueueService {
 
   async emit(event: IEvent): Promise<boolean> {
     try {
-      this.amqpConn.publish(event.exchange, event.routingKey, event._payload);
+      this.amqpConn.publish(event.exchange, event.routingKey, event.payload);
       return true
     } catch (e) {
       console.log(e.message);

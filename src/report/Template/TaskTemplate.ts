@@ -1,0 +1,34 @@
+import * as moment from 'moment';
+import { ITaskInterface } from '../../task/task.interface';
+import { BaseTemplate } from './BaseTemplate';
+import { GetFullNameUser } from '../common/GetFullNameUserFunction';
+
+
+class TaskTemplate extends BaseTemplate{
+
+  buffer: Buffer;
+  data: any;
+  fileNamePrefix: string;
+  path: string;
+
+  constructor(task: ITaskInterface) {
+    super();
+    this.dataTransform(task);
+    this.path = 'task-template.xlsx';
+    this.fileNamePrefix = 'task-';
+  }
+
+  dataTransform(task: ITaskInterface) {
+    this.data.head = GetFullNameUser(task.head);
+    this.data.members = task.members.map((user) => {return GetFullNameUser(user)});
+    if (this.data.members.length === 1) {
+      this.data.members.push('');
+    }
+    this.data.date = moment(task.points[0].dateCheck).format('DD.MM.YYYY');
+    this.data.points = task.points;
+
+  }
+
+}
+
+export {TaskTemplate}
