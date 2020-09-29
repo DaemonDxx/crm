@@ -89,7 +89,12 @@ export class NotificationService {
     // @ts-ignore
     const notify = await this.notifyModel.findOne({'points':
         {$in: [pointID]}
-    }).populate('points').lean();
+    })
+      .populate([
+        {path: 'points'},
+        {path: 'head', select: ['firstName', 'lastName', 'thirdName', '_id']},
+      ])
+      .lean();
 
     if (!notify) {
       return
