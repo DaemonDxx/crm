@@ -9,13 +9,14 @@ class TaskTemplate extends BaseTemplate{
   buffer: Buffer;
   data: any;
   fileNamePrefix: string;
-  path: string;
+  fileName: string;
 
   constructor(task: ITaskInterface) {
     super();
     this.dataTransform(task);
-    this.path = 'task-template.xlsx';
+    this.fileName = 'task-template.xlsx';
     this.fileNamePrefix = 'task-';
+    this.typeFile = 'xlsx';
   }
 
   dataTransform(task: ITaskInterface) {

@@ -6,6 +6,7 @@ import { NotificationSchema } from './notification.model';
 import { ReservedNumberSchema } from './reservedNumber.model';
 import { PointSchema } from '../point/point.model';
 import { UserSchema } from '../user/user.model';
+import { ReportModule } from '../report/report.module';
 
 @Module({
   imports: [MongooseModule.forFeature([
@@ -13,7 +14,16 @@ import { UserSchema } from '../user/user.model';
     {name: 'ReservedNumber', schema: ReservedNumberSchema},
     {name: 'Point', schema: PointSchema},
     {name: 'User', schema: UserSchema}
-  ])],
+  ]),
+    ReportModule.forRoot({
+      storage: {
+        type: 'LOCALHOST',
+        storageOptions: {
+          pathTemplate: './templates/',
+          pathSaveIn: './'
+        }
+      }
+    })],
   controllers: [NotificationController],
   providers: [NotificationService]
 })

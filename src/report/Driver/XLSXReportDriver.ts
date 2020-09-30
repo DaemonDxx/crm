@@ -1,23 +1,16 @@
 import { ITemplate } from '../Template/interface/ITemplate';
-import { BaseReportDriverToFile } from './BaseReportDriverToFile';
 import * as xlsx from 'xlsx-template';
+import { IReportDriver } from './interface/IReportDriver';
 
-class XLSXReportDriver extends BaseReportDriverToFile{
+class XLSXReportDriver implements IReportDriver{
 
-  template: ITemplate
-  typeFile: string
 
-  constructor() {
-    super();
-    this.typeFile = 'xlsx';
-  }
-
-  async generateReport(): Promise<string> {
+  async generateReport(template: ITemplate): Promise<Buffer> {
     // @ts-ignore
     const t = new xlsx(this.template.getBuffer());
-    t.substitute(1, this.template.getData());
-    const filename = await super.saveReport(t.generate({type: 'uint8array'}));
-    return filename;
+    t.substitute(1, template.getData());
+    const array: Uint8Array = await t.generate({type: 'uint8array'});
+    return Buffer.from(array);
   }
 
 }

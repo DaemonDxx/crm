@@ -6,13 +6,10 @@ import { InviteModule } from './invite/invite.module';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PointModule } from './point/point.module';
 import { NotificationModule } from './notification/notification.module';
 import { TaskModule } from './task/task.module';
 import { ResultCheckModule } from './result-check/result-check.module';
-import { EventsModule } from './events/events.module';
-import { QueueModule } from './queue/queue.module';
 import { ReportModule } from './report/report.module';
 
 
@@ -30,7 +27,15 @@ import { ReportModule } from './report/report.module';
     NotificationModule,
     TaskModule,
     ResultCheckModule,
-    ReportModule,
+    ReportModule.forRoot({
+      storage: {
+        type: 'LOCALHOST',
+        storageOptions: {
+          pathTemplate: './',
+          pathSaveIn: './'
+        }
+      }
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

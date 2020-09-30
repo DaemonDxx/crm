@@ -1,26 +1,18 @@
 import docx from 'docx-templates';
 import { ITemplate } from '../Template/interface/ITemplate';
-import {BaseReportDriverToFile} from './BaseReportDriverToFile';
+import { IReportDriver } from './interface/IReportDriver';
 
-class DOCXReportDriver extends BaseReportDriverToFile {
+class DOCXReportDriver implements IReportDriver{
 
-  template: ITemplate
-  typeFile: string
 
-  constructor() {
-    super();
-    this.typeFile = 'docx';
-  }
-
-  async generateReport(): Promise<string> {
+  async generateReport(template: ITemplate): Promise<Buffer> {
     const reportBuffer = await docx({
-        template: this.template.getBuffer(),
-        data: this.template.getData(),
+        template: template.getBuffer(),
+        data: template.getData(),
       cmdDelimiter: ['{','}']
       },
   );
-    const filename = await super.saveReport(reportBuffer);
-    return filename;
+    return Buffer.from(reportBuffer);
   }
 
 }

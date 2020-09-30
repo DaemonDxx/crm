@@ -1,13 +1,7 @@
 import { ITemplate } from '../../Template/interface/ITemplate';
 
 interface IReportDriver {
-
-  typeFile: string
-
-  generateReport(): Promise<string>;
-  generateFilename(): string;
-  setTemplate(template: ITemplate);
-
+  generateReport(template: ITemplate): Promise<Buffer>;
 }
 
 export {IReportDriver}

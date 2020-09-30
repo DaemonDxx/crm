@@ -4,13 +4,13 @@ import { INotificationInterface } from '../../notification/INotification.interfa
 class NotificationPhoneTemplate extends BaseNotificationTemplate {
 
   data: any
-  path: string
+  fileName: string
   fileNamePrefix: string
 
   constructor(data: INotificationInterface) {
     super(data);
     this.dataTransform(data);
-    this.path = 'notify-template.docx';
+    this.fileName = 'notify-template.docx';
     this.fileNamePrefix = 'phone-notify-';
     this.data.title = 'Телефонограмма';
   }

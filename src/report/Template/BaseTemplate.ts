@@ -5,7 +5,7 @@ class BaseTemplate implements ITemplate {
   buffer: Buffer;
   data: any;
   fileNamePrefix: string;
-  path: string;
+  fileName: string;
 
   constructor() {
     this.data = {};
@@ -20,13 +20,16 @@ class BaseTemplate implements ITemplate {
     return this.data;
   }
 
+  setBuffer(buffer: Buffer): void {
+    this.buffer = buffer;
+  }
+
   getBuffer(): Buffer {
     return this.buffer;
   }
 
-  setBuffer(buffer: Buffer) {
-    this.buffer = buffer;
-  }
+  typeFile: string;
+
 
 }
 

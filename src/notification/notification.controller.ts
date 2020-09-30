@@ -22,11 +22,13 @@ import { not } from 'rxjs/internal-compatibility';
 import { DOCXReportDriver } from '../report/Driver/DOCXReportDriver';
 import { NotificationPhoneTemplate } from '../report/Template/NotificationPhoneTemplate';
 import { INotificationInterface } from './INotification.interface';
+import { ReportService } from '../report/report.service';
 
 @Controller('/notification')
 export class NotificationController {
 
-  constructor(private notifyService: NotificationService) {
+  constructor(private notifyService: NotificationService,
+              private readonly reportService: ReportService) {
   }
 
 
@@ -60,6 +62,12 @@ export class NotificationController {
       return await this.notifyService.reservingNumber();
     }
     return number;
+  }
+
+  @Get('/test')
+  async test() {
+    const notify = await this.notifyService.findNotificationByPointID('5f49fda55d6ea732ed853571');
+    const link = await this.reportService.generateReport(new NotificationPhoneTemplate(notify));
   }
 
 

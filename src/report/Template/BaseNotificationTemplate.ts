@@ -8,7 +8,7 @@ import { Get } from '@nestjs/common';
 class BaseNotificationTemplate extends BaseTemplate{
 
   data: any
-  path: string
+  fileName: string
   buffer: Buffer
   fileNamePrefix: string
 
@@ -16,6 +16,7 @@ class BaseNotificationTemplate extends BaseTemplate{
   constructor(data: INotificationInterface) {
     super();
     this.dataTransform(data);
+    this.typeFile = 'docx';
   }
 
   dataTransform(data: INotificationInterface) {

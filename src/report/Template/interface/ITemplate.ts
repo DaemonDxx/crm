@@ -1,14 +1,15 @@
 interface ITemplate {
 
-  path: string
+  fileName: string
   data: any
   buffer: Buffer
   fileNamePrefix: string
+  typeFile: string
 
   dataTransform(data: any)
   getData(): any
-  setBuffer(buffer: Buffer);
-  getBuffer(): Buffer;
+  setBuffer(buffer: Buffer): void
+  getBuffer(): Buffer
 
 }
 
