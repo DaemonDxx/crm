@@ -30,6 +30,10 @@ class BaseTemplate implements ITemplate {
 
   typeFile: string;
 
+  getMimeType(): string {
+    return '';
+  }
+
 
 }
 

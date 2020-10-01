@@ -1,15 +1,14 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
-  Param,
   Post,
   Query,
-  Req,
+  Req, Res,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
+import {Response} from 'express';
 import { NotificationService } from './notification.service';
 import { CreateNotificationDto } from './createNotification.dto';
 import { Notification } from './notification.model';
@@ -23,6 +22,7 @@ import { DOCXReportDriver } from '../report/Driver/DOCXReportDriver';
 import { NotificationPhoneTemplate } from '../report/Template/NotificationPhoneTemplate';
 import { INotificationInterface } from './INotification.interface';
 import { ReportService } from '../report/report.service';
+import { FileLink } from '../report/Storage/interfaces/fileLink.interface';
 
 @Controller('/notification')
 export class NotificationController {
@@ -65,10 +65,14 @@ export class NotificationController {
   }
 
   @Get('/test')
-  async test() {
+  async test(@Res() res: Response) {
     const notify = await this.notifyService.findNotificationByPointID('5f49fda55d6ea732ed853571');
-    const link = await this.reportService.generateReport(new NotificationPhoneTemplate(notify));
+    const link: FileLink = await this.reportService.generateReport(new NotificationPhoneTemplate(notify));
+    const arr = await this.reportService.getFile(link);
+    res.header('Content-Type', link.mimeType);
+    res.end(arr);
   }
+
 
 
 }

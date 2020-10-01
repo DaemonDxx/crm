@@ -16,6 +16,15 @@ import { ReportModule } from './report/report.module';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
+    ReportModule.forRoot({
+      storage: {
+        type: 'LOCALHOST',
+        storageOptions: {
+          pathTemplate: './templates/',
+          pathSaveIn: './'
+        }
+      }
+    }),
     InviteModule,
     UserModule,
     //ToDo Брать адрес к бд из модуля настроек
@@ -27,17 +36,10 @@ import { ReportModule } from './report/report.module';
     NotificationModule,
     TaskModule,
     ResultCheckModule,
-    ReportModule.forRoot({
-      storage: {
-        type: 'LOCALHOST',
-        storageOptions: {
-          pathTemplate: './',
-          pathSaveIn: './'
-        }
-      }
-    }),
   ],
   controllers: [AppController],
   providers: [AppService],
+  exports: [ReportModule]
 })
 export class AppModule {}
+

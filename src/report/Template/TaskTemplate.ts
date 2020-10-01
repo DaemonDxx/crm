@@ -30,6 +30,10 @@ class TaskTemplate extends BaseTemplate{
 
   }
 
+  getMimeType(): string {
+    return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  }
+
 }
 
 export {TaskTemplate}

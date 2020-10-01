@@ -15,15 +15,7 @@ import { ReportModule } from '../report/report.module';
     {name: 'Point', schema: PointSchema},
     {name: 'User', schema: UserSchema}
   ]),
-    ReportModule.forRoot({
-      storage: {
-        type: 'LOCALHOST',
-        storageOptions: {
-          pathTemplate: './templates/',
-          pathSaveIn: './'
-        }
-      }
-    })],
+  ReportModule.forRoot()],
   controllers: [NotificationController],
   providers: [NotificationService]
 })

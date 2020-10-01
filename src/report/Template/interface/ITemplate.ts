@@ -10,6 +10,7 @@ interface ITemplate {
   getData(): any
   setBuffer(buffer: Buffer): void
   getBuffer(): Buffer
+  getMimeType(): string
 
 }
 

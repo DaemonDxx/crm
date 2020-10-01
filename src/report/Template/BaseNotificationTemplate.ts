@@ -31,7 +31,11 @@ class BaseNotificationTemplate extends BaseTemplate{
       address: item.address,
       dataCheck: moment(new Date(item.dateCheck)).format('DD.MM.YYYY'),
       numberDevice: item.numberDevice
-    }})
+    }});
+  }
+
+  getMimeType(): string {
+    return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   }
 }
 

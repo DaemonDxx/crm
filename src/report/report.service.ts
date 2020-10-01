@@ -23,7 +23,12 @@ export class ReportService {
     template.setBuffer(bufferTemplate);
     const reportBuffer: Buffer = await driver.generateReport(template);
     const fileLink: FileLink = await this.storage.saveFile(reportBuffer, template);
+    fileLink.mimeType = template.getMimeType();
     return fileLink;
+  }
+
+  async getFile(link: FileLink): Promise<Uint8Array> {
+    return this.storage.readFile(link);
   }
 
   private async getBufferTemplate(filename: string): Promise<Buffer> {

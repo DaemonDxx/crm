@@ -20,7 +20,12 @@ class LocalhostStorage implements IStorage {
   }
 
   public async readFile(link: FileLink): Promise<Buffer> {
-    const buffer = await asyncReadFile(path.join(this.pathTemplate, link.id));
+    let buffer;
+    if (link.mimeType === 'template') {
+      buffer = await asyncReadFile(path.join(this.pathTemplate, link.id));
+    } else {
+      buffer = await asyncReadFile(path.join(this.pathSaveIn, link.id));
+    }
     return buffer;
   }
 
@@ -28,11 +33,11 @@ class LocalhostStorage implements IStorage {
     const filename = this.nameGenerator.generateName(template);
     await asyncSaveFile(path.join(this.pathSaveIn, filename), reportBuffer);
     //todo добавить хэш функцию
-    return {id: filename, hash: ''};
+    return {id: filename, hash: '', mimeType: ''};
   }
 
   public getLinkByTemplate(filename: string): FileLink {
-    return {id: filename, hash: ''};
+    return {id: filename, hash: '', mimeType: 'template'};
   }
 
 }
