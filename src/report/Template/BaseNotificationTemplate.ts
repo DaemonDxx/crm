@@ -20,7 +20,7 @@ class BaseNotificationTemplate extends BaseTemplate{
   }
 
   dataTransform(data: INotificationInterface) {
-    this.data._id = data._id;
+    this.data._id = data._id.toString();
     this.data.dateSend = moment(data.dateSend).format('DD.MM.YYYY');
     this.data.number = data.number;
     this.data.from = `${data.from.position.description} ${data.from.department.shortName} ${GetFullNameUser(data.from)}`;

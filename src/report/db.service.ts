@@ -15,5 +15,15 @@ export class DbService {
     return file;
   }
 
+  async findFileReportByModelID(id: string): Promise<FileReport> {
+    const fileReport: FileReport = await this.fileReportModel.findOne({byModelID: id});
+    return fileReport;
+  }
+
+  async findByID(id: string): Promise<FileReport> {
+    const file: FileReport = await this.fileReportModel.findById(id);
+    return file;
+  }
+
 
 }

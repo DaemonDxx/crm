@@ -36,8 +36,13 @@ export class ReportService {
   }
 
 
-  async getFile(fileReport: FileReport): Promise<Uint8Array> {
+  async getFile(fileReport: FileReport): Promise<Buffer> {
     return this.storage.readFile(fileReport.filename);
+  }
+
+  async getFileReportByModelID(id: string): Promise<FileReport> {
+    const fileReport = await this.dbService.findFileReportByModelID(id);
+    return fileReport;
   }
 
   private async getBufferTemplate(filename: string): Promise<Buffer> {
