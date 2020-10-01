@@ -1,5 +1,5 @@
 
-import { INotificationInterface } from '../../notification/INotification.interface';
+import { INotificationInterface } from '../../notification/interfaces/INotification.interface';
 import * as moment from 'moment';
 import { BaseTemplate } from './BaseTemplate';
 import { GetFullNameUser } from '../common/GetFullNameUserFunction';

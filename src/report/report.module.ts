@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ReportService } from './report.service';
-import { ServiceOptions } from './service.options';
+import { ServiceOptions } from './interfaces/service.options';
 import { FileController } from './report.contoller';
 
 @Module({})
@@ -13,7 +13,6 @@ export class ReportModule {
       providers: [{
         provide: ReportService,
         useFactory: () => {
-          console.log('CREATE!')
           return new ReportService(options);
         }
       }],

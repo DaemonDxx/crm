@@ -1,7 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 import { Schema } from "mongoose";
-import { IUserInterface } from '../user/user.interface';
-import { IPointInterface } from '../point/IPoint.interface';
+import { IUserInterface } from '../../user/user.interface';
+import { IPointInterface } from '../../point/interfaces/IPoint.interface';
 
 
 export interface INotificationInterface {

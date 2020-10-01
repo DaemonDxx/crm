@@ -6,7 +6,7 @@ import { Department } from './department.model';
 import { Position } from './position.model';
 import { CreateUserDto } from '../auth/createUser.dto';
 import { InviteService } from '../invite/invite.service';
-import { Invite } from '../invite/invite.model';
+import { Invite } from '../invite/DBModels/invite.model';
 
 @Injectable()
 export class UserService {

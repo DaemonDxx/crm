@@ -1,5 +1,5 @@
 import { Prop } from '@nestjs/mongoose';
-import Area from '../Utils/area.list';
+import Area from '../../Utils/area.list';
 
 export interface IPointInterface {
 

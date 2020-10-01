@@ -1,10 +1,10 @@
 interface ITemplate {
 
-  fileName: string
+  readonly fileName: string
   data: any
   buffer: Buffer
-  fileNamePrefix: string
-  typeFile: string
+  readonly fileNamePrefix: string
+  readonly typeFile: string
 
   dataTransform(data: any)
   getData(): any

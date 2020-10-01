@@ -1,5 +1,5 @@
 
-import { IPointInterface } from '../point/IPoint.interface';
+import { IPointInterface } from '../point/interfaces/IPoint.interface';
 import { IUserInterface } from '../user/user.interface';
 
 interface ITaskInterface {

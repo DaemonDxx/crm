@@ -1,7 +1,7 @@
 interface LocalStorageOptions {
 
-  pathTemplate: string
-  pathSaveIn: string
+  readonly pathTemplate: string
+  readonly pathSaveIn: string
 
 }
 

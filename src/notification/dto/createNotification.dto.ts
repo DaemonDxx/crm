@@ -1,6 +1,6 @@
-import { INotificationInterface } from './INotification.interface';
-import { IUserInterface } from '../user/user.interface';
-import { IPointInterface } from '../point/IPoint.interface';
+import { INotificationInterface } from '../interfaces/INotification.interface';
+import { IUserInterface } from '../../user/user.interface';
+import { IPointInterface } from '../../point/interfaces/IPoint.interface';
 
 
 export class CreateNotificationDto implements INotificationInterface {

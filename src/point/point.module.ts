@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PointController } from './point.controller';
 import { PointService } from './point.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PointSchema } from './point.model';
+import { PointSchema } from './DBModels/point.model';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({

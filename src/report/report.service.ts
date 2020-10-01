@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ITemplate } from './Template/interface/ITemplate';
-import { ServiceOptions } from './service.options';
+import { ServiceOptions } from './interfaces/service.options';
 import { IStorage } from './Storage/interfaces/storage.interface';
 import { LocalhostStorage } from './Storage/localhost.storage';
 import { FactoryDrivers } from './Driver/FactoryDriver';
@@ -9,8 +9,8 @@ import { FileLink } from './Storage/interfaces/fileLink.interface';
 @Injectable()
 export class ReportService {
 
-  factoryDriver: FactoryDrivers
-  storage: IStorage
+  readonly factoryDriver: FactoryDrivers
+  readonly storage: IStorage
 
   constructor(options: ServiceOptions) {
     this.storage = this.factoryStorage(options.storage);

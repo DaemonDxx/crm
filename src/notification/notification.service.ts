@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateNotificationDto } from './createNotification.dto';
-import { Notification } from './notification.model';
+import { CreateNotificationDto } from './dto/createNotification.dto';
+import { Notification } from './DBModels/notification.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema, Types } from 'mongoose';
-import { ReservedNumber } from './reservedNumber.model';
-import { Point } from '../point/point.model';
+import { ReservedNumber } from './DBModels/reservedNumber.model';
+import { Point } from '../point/DBModels/point.model';
 import { User } from '../user/user.model';
 import { not } from 'rxjs/internal-compatibility';
 

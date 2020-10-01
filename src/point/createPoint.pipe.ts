@@ -1,5 +1,5 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { CreatePointDto } from './createPoint.dto';
+import { CreatePointDto } from './dto/createPoint.dto';
 import { ParseDate } from '../Utils/PipeFucntions/parseDate.functions';
 
 

@@ -1,4 +1,4 @@
-import { IPointInterface } from './IPoint.interface';
+import { IPointInterface } from '../interfaces/IPoint.interface';
 
 export class CreatePointDto implements IPointInterface {
   address: string;

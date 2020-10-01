@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Req, UseGuards, UsePipes } from '@nestjs/common';
-import { Invite } from './invite.model';
+import { Invite } from './DBModels/invite.model';
 import { InviteService } from './invite.service';
-import { InviteCreateDto } from './invite.create.dto';
+import { InviteCreateDto } from './dto/invite.create.dto';
 import { InvitePipe } from './invite.pipe';
 import { PermissionGuard } from '../Utils/permission.guard';
 import { Permissions } from '../Utils/permissions.decorator';

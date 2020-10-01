@@ -1,5 +1,5 @@
 import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { CreateNotificationDto } from './createNotification.dto';
+import { CreateNotificationDto } from './dto/createNotification.dto';
 import {ParseArray} from '../Utils/PipeFucntions/stringToArray.function';
 import { ParseDate } from '../Utils/PipeFucntions/parseDate.functions';
 

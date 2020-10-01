@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Invite } from './invite.model';
-import { InviteCreateDto } from './invite.create.dto';
+import { Invite } from './DBModels/invite.model';
+import { InviteCreateDto } from './dto/invite.create.dto';
 
 @Injectable()
 export class InviteService {

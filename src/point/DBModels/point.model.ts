@@ -1,6 +1,6 @@
 import { Prop, Schema as SchemaDecorator, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema } from 'mongoose';
-import Area from '../Utils/area.list';
+import Area from '../../Utils/area.list';
 
 
 @SchemaDecorator()

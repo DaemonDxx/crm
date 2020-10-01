@@ -1,7 +1,7 @@
 interface FileLink {
 
-  id: string
-  hash: string
+  readonly id: string
+  readonly hash: string
   mimeType: string
 
 }

@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 import {Response} from 'express';
 import { NotificationService } from './notification.service';
-import { CreateNotificationDto } from './createNotification.dto';
-import { Notification } from './notification.model';
+import { CreateNotificationDto } from './dto/createNotification.dto';
+import { Notification } from './DBModels/notification.model';
 import { AuthGuard } from '@nestjs/passport';
 import { PermissionGuard } from '../Utils/permission.guard';
 import { Permissions } from '../Utils/permissions.decorator';
@@ -20,7 +20,7 @@ import { NotifyPipe } from './notify.pipe';
 import { not } from 'rxjs/internal-compatibility';
 import { DOCXReportDriver } from '../report/Driver/DOCXReportDriver';
 import { NotificationPhoneTemplate } from '../report/Template/NotificationPhoneTemplate';
-import { INotificationInterface } from './INotification.interface';
+import { INotificationInterface } from './interfaces/INotification.interface';
 import { ReportService } from '../report/report.service';
 import { FileLink } from '../report/Storage/interfaces/fileLink.interface';
 
