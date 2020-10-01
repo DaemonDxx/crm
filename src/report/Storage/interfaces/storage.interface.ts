@@ -1,11 +1,11 @@
 import { ITemplate } from '../../Template/interface/ITemplate';
-import { FileLink } from './fileLink.interface';
+import { ReadFileOptions } from '../localhost.storage';
+
 
 interface IStorage {
 
-  saveFile(reportBuffer: Buffer, template: ITemplate): Promise<FileLink>
-  readFile(link: FileLink): Promise<Buffer>
-  getLinkByTemplate(filename: string): FileLink
+  saveFile(reportBuffer: Buffer, template: ITemplate): Promise<string>
+  readFile(filename: string, options?: ReadFileOptions): Promise<Buffer>
 
 }
 

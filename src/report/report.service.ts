@@ -4,36 +4,44 @@ import { ServiceOptions } from './interfaces/service.options';
 import { IStorage } from './Storage/interfaces/storage.interface';
 import { LocalhostStorage } from './Storage/localhost.storage';
 import { FactoryDrivers } from './Driver/FactoryDriver';
-import { FileLink } from './Storage/interfaces/fileLink.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { FileReport } from './DBModels/fileReport.model';
+import { DbService } from './db.service';
 
 @Injectable()
 export class ReportService {
 
   readonly factoryDriver: FactoryDrivers
   readonly storage: IStorage
+  @InjectModel('fileReport') private readonly fileReportModel: Model<FileReport>
 
-  constructor(options: ServiceOptions) {
+  constructor(options: ServiceOptions, private readonly dbService?: DbService) {
     this.storage = this.factoryStorage(options.storage);
     this.factoryDriver = new FactoryDrivers();
   }
 
-  async generateReport(template: ITemplate): Promise<FileLink> {
-    const bufferTemplate: Buffer = await this.getBufferTemplate(template.fileName);
+  async generateReport(template: ITemplate): Promise<FileReport> {
     const driver = this.factoryDriver.getDriver(template.typeFile);
+    const bufferTemplate: Buffer = await this.getBufferTemplate(template.fileName);
     template.setBuffer(bufferTemplate);
     const reportBuffer: Buffer = await driver.generateReport(template);
-    const fileLink: FileLink = await this.storage.saveFile(reportBuffer, template);
-    fileLink.mimeType = template.getMimeType();
-    return fileLink;
+    const filename: string = await this.storage.saveFile(reportBuffer, template);
+    const fileReport = await this.dbService.createFileReport({
+      filename,
+      mimeType: template.getMimeType(),
+      byModelID: template.getData()._id
+    });
+    return fileReport;
   }
 
-  async getFile(link: FileLink): Promise<Uint8Array> {
-    return this.storage.readFile(link);
+
+  async getFile(fileReport: FileReport): Promise<Uint8Array> {
+    return this.storage.readFile(fileReport.filename);
   }
 
   private async getBufferTemplate(filename: string): Promise<Buffer> {
-    const fileLink: FileLink = this.storage.getLinkByTemplate(filename);
-    const buffer: Buffer = await this.storage.readFile(fileLink);
+    const buffer: Buffer = await this.storage.readFile(filename, {isTemplate: true});
     return buffer
   }
 

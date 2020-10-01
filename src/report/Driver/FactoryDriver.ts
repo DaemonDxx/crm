@@ -12,7 +12,7 @@ class FactoryDrivers {
 
   getDriver(typeFile: string): IReportDriver {
     if (this.drivers.has(typeFile)) {
-      return this.drivers[typeFile]
+      return this.drivers.get(typeFile);
     } else {
       const driver = this.createDriver(typeFile);
       this.drivers.set(typeFile, driver);

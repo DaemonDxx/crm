@@ -1,11 +1,15 @@
+import * as _ from 'lodash'
 import { IStorage } from './interfaces/storage.interface';
-import { FileLink } from './interfaces/fileLink.interface';
 import { ITemplate } from '../Template/interface/ITemplate';
 import { LocalStorageOptions } from './interfaces/localStorage.options.interface';
 import { asyncReadFile, asyncSaveFile } from '../common/fsAsyncFuncrion';
 import * as path from "path";
 import { NameGenerator } from '../NameGenerator/nameGenerator.interface';
 import { SimpleNameGenerator } from '../NameGenerator/SimpleNameGenerator';
+
+interface ReadFileOptions {
+  isTemplate: boolean
+}
 
 class LocalhostStorage implements IStorage {
 
@@ -19,27 +23,18 @@ class LocalhostStorage implements IStorage {
     this.nameGenerator = new SimpleNameGenerator();
   }
 
-  public async readFile(link: FileLink): Promise<Buffer> {
-    let buffer;
-    if (link.mimeType === 'template') {
-      buffer = await asyncReadFile(path.join(this.pathTemplate, link.id));
-    } else {
-      buffer = await asyncReadFile(path.join(this.pathSaveIn, link.id));
-    }
+  public async readFile(filename:string, options?: ReadFileOptions): Promise<Buffer> {
+    const pathRead = _.get(options, 'isTemplate')?this.pathTemplate:this.pathSaveIn;
+    const buffer = await asyncReadFile(path.join(pathRead, filename));
     return buffer;
   }
 
-  public async saveFile(reportBuffer: Buffer, template: ITemplate): Promise<FileLink> {
+  public async saveFile(reportBuffer: Buffer, template: ITemplate): Promise<string> {
     const filename = this.nameGenerator.generateName(template);
     await asyncSaveFile(path.join(this.pathSaveIn, filename), reportBuffer);
-    //todo добавить хэш функцию
-    return {id: filename, hash: '', mimeType: ''};
-  }
-
-  public getLinkByTemplate(filename: string): FileLink {
-    return {id: filename, hash: '', mimeType: 'template'};
+    return filename;
   }
 
 }
 
-export {LocalhostStorage}
+export {LocalhostStorage, ReadFileOptions};
