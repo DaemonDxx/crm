@@ -1,4 +1,5 @@
 import * as _ from 'lodash'
+import * as fs from 'fs'
 import { IStorage } from './interfaces/storage.interface';
 import { ITemplate } from '../Template/interface/ITemplate';
 import { LocalStorageOptions } from './interfaces/localStorage.options.interface';
@@ -18,6 +19,9 @@ class LocalhostStorage implements IStorage {
   nameGenerator: NameGenerator
 
   constructor(options: LocalStorageOptions) {
+    if (!fs.existsSync(options.pathTemplate)) {
+      throw new Error('Папки с шаблонами не существует');
+    }
     this.pathSaveIn = options.pathSaveIn;
     this.pathTemplate = options.pathTemplate;
     this.nameGenerator = new SimpleNameGenerator();
