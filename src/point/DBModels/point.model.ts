@@ -61,7 +61,6 @@ export class Point extends Document {
   @Prop()
   lastDateCheck: Date;
 
-
   @Prop({
     required: true
   })
@@ -71,6 +70,11 @@ export class Point extends Document {
     ref: 'Notification'
   })
   notification: Schema.Types.ObjectId
+
+  @Prop({
+    ref: 'ResultCheck'
+  })
+  resultCheck: Schema.Types.ObjectId
 
 }
 

@@ -7,7 +7,8 @@ import { CreatePointDto } from './dto/createPoint.dto';
 @Injectable()
 export class PointService {
 
-  constructor(@InjectModel('Point') private pointModel: Model<Point>) {
+  constructor(@InjectModel('Point') private pointModel: Model<Point>
+              ) {
   }
 
   async createPoint(createPointDTO: CreatePointDto): Promise<Point> {
@@ -40,6 +41,16 @@ export class PointService {
   async findPointByName(name: string): Promise<any> {
     const points = await this.pointModel.find({name, notification: {$exists: false}}).lean();
     return points;
+  }
+
+  async findPointByID(pointID: string): Promise<Point> {
+    const point = await this.pointModel.findById(pointID);
+    return point;
+  }
+
+  async updatePoint(point: Point): Promise<Point> {
+    const updatePoint = await this.pointModel.findOneAndUpdate({_id: point.id}, point);
+    return updatePoint;
   }
 
 

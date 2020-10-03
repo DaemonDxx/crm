@@ -1,5 +1,4 @@
-import { Prop } from '@nestjs/mongoose';
-import Area from '../../Utils/area.list';
+import { IResultCheck } from './resultCheck.interface';
 
 export interface IPointInterface {
 
@@ -16,5 +15,6 @@ export interface IPointInterface {
   phone: string[];
   lastDateCheck: Date;
   numberDevice: string;
+  resultCheck?: IResultCheck
 
 }

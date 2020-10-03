@@ -8,12 +8,15 @@ import { Permissions } from '../Utils/permissions.decorator';
 import { CreatePointPipe } from './createPoint.pipe';
 import {ParseDatePipe} from '../Utils/parseDate.pipe';
 import { Point } from './DBModels/point.model';
+import { CreateResultDto } from './dto/createResult.dto';
+import { ResultCheckService } from './resultCheck.service';
 
 @Controller('point')
 export class PointController {
 
-  constructor(private pointService: PointService) {
-  }
+  constructor(private pointService: PointService,
+              private readonly resultCheckService: ResultCheckService
+              ) {}
 
   @Post()
   @Permissions(PermissionsList.point, PermissionsList.creator)
@@ -50,6 +53,19 @@ export class PointController {
       return { points: [] };
     }
     return { points };
+  }
+
+  @Post('/result')
+  async createResultCheck(@Body() createResultDTO: CreateResultDto): Promise<Point> {
+    let point = await this.pointService.findPointByID(createResultDTO.pointID);
+    if (point) {
+      const resultCheck = await this.resultCheckService.createResultCheck(createResultDTO);
+      point.resultCheck = resultCheck._id;
+      point = await this.pointService.updatePoint(point);
+      return point;
+    } else {
+      throw new BadRequestException({}, 'Данной точки не существует');
+    }
   }
 
 }

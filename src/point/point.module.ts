@@ -4,29 +4,18 @@ import { PointService } from './point.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PointSchema } from './DBModels/point.model';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ResultCheckSchema } from './DBModels/result-check.model';
+import { ResultCheckService } from './resultCheck.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-    {name: 'Point', schema: PointSchema}
+      {name: 'Point', schema: PointSchema},
+      {name: 'ResultCheck', schema: ResultCheckSchema}
   ]),
-    // ClientsModule.register([
-    //   {
-    //     name: 'FILE_PARSER_SERVICE',
-    //     transport: Transport.RMQ,
-    //     options: {
-    //       noAck: false,
-    //       urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-    //       queue: 'files',
-    //       queueOptions: {
-    //         durable: true
-    //       }
-    //     }
-    //   },
-    // ]),
 
   ],
   controllers: [PointController],
-  providers: [PointService]
+  providers: [PointService, ResultCheckService]
 })
 export class PointModule {}
