@@ -1,20 +1,12 @@
 import { ITemplate } from './interface/ITemplate';
 
-class BaseTemplate implements ITemplate {
+abstract class BaseTemplate implements ITemplate {
 
   buffer: Buffer;
   data: any;
   fileNamePrefix: string;
   fileName: string;
-
-  constructor() {
-    this.data = {};
-    this.data.members = [];
-  }
-
-  dataTransform(data: any) {
-    this.data = data;
-  }
+  typeFile: string;
 
   getData(): any {
     return this.data;
@@ -28,12 +20,8 @@ class BaseTemplate implements ITemplate {
     return this.buffer;
   }
 
-  typeFile: string;
-
-  getMimeType(): string {
-    return '';
-  }
-
+  abstract getMimeType(): string
+  abstract dataTransform(data: any)
 
 }
 
