@@ -36,12 +36,13 @@ export class TaskService {
   }
 
   async updateTask(createTaskDTO: CreateTaskDto): Promise<Task> {
-    const updateTask  = await this.taskModel.findByIdAndUpdate(createTaskDTO._id, createTaskDTO)
+    const updateTask  = await this.taskModel.findByIdAndUpdate(createTaskDTO._id, createTaskDTO);
+    const task = await this.taskModel.findById(updateTask._id)
       .populate([
         {path: 'head', select: ['firstName', 'lastName', 'thirdName', '_id']},
         {path: 'members', select: ['firstName', 'lastName', 'thirdName', '_id']},
-        {path: 'points'}])
-    return updateTask;
+        {path: 'points'}]);
+    return task;
   }
 
   async getNextNumberTask(): Promise<number> {
@@ -85,6 +86,12 @@ export class TaskService {
       {path: 'points'}
     ]);
     return task;
+  }
+
+  async deleteTaskByID(taskID: string): Promise<boolean> {
+    const response = await this.taskModel.findByIdAndDelete(taskID);
+    console.log(response);
+    return true;
   }
 
 

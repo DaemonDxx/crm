@@ -1,4 +1,18 @@
-import { Body, Controller, Get, Post, Put, Query, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
 import { Task } from './task.model';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './createTask.dto';
@@ -13,6 +27,7 @@ import { TaskTemplate } from '../report/Template/TaskTemplate';
 import { XLSXReportDriver } from '../report/Driver/XLSXReportDriver';
 import { ParseDatePipe } from '../Utils/parseDate.pipe';
 import * as path from 'path';
+import { STATUS_CODES } from 'http';
 
 @Controller('task')
 export class TaskController {
@@ -44,6 +59,17 @@ export class TaskController {
   async getTaskByDate(@Query('date', ParseDatePipe) date: any, @Req() req) {
       const task = await this.taskService.getTaskByDayAndUserID(date, req.user._id);
       return task;
+  }
+
+  @Delete()
+  @HttpCode(204)
+  async deleteTaskByID(@Query('_id') taskID: string): Promise<void> {
+    try {
+      await this.taskService.deleteTaskByID(taskID);
+      return;
+    } catch (e) {
+      throw new BadRequestException({}, e.message);
+    }
   }
 
 }
