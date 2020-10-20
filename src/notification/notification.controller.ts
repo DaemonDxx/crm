@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Get,
-  Post,
+  Post, Put,
   Query,
   Req, Res,
   UseGuards,
@@ -19,6 +19,7 @@ import { NotifyPipe } from './notify.pipe';
 import { NotificationPhoneTemplate } from '../report/Template/NotificationPhoneTemplate';
 import { ReportService } from '../report/report.service';
 import { FileReport } from '../report/DBModels/fileReport.model';
+import { UpdateNotificationDto } from './dto/updateNotification.dto';
 
 
 @Controller('/notification')
@@ -48,6 +49,14 @@ export class NotificationController {
       return {notification: undefined}
     }
     return {notification: notify};
+  }
+
+  @Put()
+  @Permissions(PermissionsList.creator, PermissionsList.notification)
+  @UseGuards(AuthGuard('jwt'), PermissionGuard)
+  async updateNotification(@Body() updateNotificationDto: UpdateNotificationDto): Promise<Notification> {
+    const updatedNotify = await this.notifyService.updateNotification(updateNotificationDto);
+    return updatedNotify;
   }
 
   @Get('/number')

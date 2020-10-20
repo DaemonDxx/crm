@@ -7,6 +7,7 @@ import { ReservedNumber } from './DBModels/reservedNumber.model';
 import { Point } from '../point/DBModels/point.model';
 import { User } from '../user/user.model';
 import { not } from 'rxjs/internal-compatibility';
+import { UpdateNotificationDto } from './dto/updateNotification.dto';
 
 @Injectable()
 export class NotificationService {
@@ -21,17 +22,22 @@ export class NotificationService {
 
   async createNotification(createNotifyDTO: CreateNotificationDto): Promise<Notification> {
     try {
-      const {_id, number, ...query} = createNotifyDTO;
-      query.dateSend = new Date();
-      //Todo С этим нужно что то сделать
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const notification = await this.notifyModel.findOneAndUpdate({number}, query, {upsert: true, new: true});
+      const notification = await new this.notifyModel(createNotifyDTO).save();
       await this.saveNotificationInPoint(notification.points, notification._id);
       await this.reservedNumberModel.deleteOne({number: notification.number});
-
       return notification;
+    } catch (e) {
+      throw new BadRequestException(e.message);
+    }
+  }
+
+  async updateNotification(updateNotificationDTO: UpdateNotificationDto): Promise<Notification> {
+    try {
+      const notifyModel = new this.notifyModel(updateNotificationDTO);
+      const updatedNotify = await this.notifyModel.findOneAndUpdate({
+        _id: updateNotificationDTO._id
+      }, notifyModel);
+      return updatedNotify;
     } catch (e) {
       throw new BadRequestException(e.message);
     }
