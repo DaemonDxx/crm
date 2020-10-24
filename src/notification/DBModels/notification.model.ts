@@ -53,7 +53,6 @@ export class Notification extends Document {
   fromEmail: string
 
   @Prop({
-    required: true,
     enum: ['send', 'reject', 'none', 'transfer']
   })
   status: string
@@ -63,7 +62,7 @@ export class Notification extends Document {
 
   @Prop({
     required: true,
-    enum: ['planned, unplanned']
+    enum: ['planned', 'unplanned']
   })
   typePlan: string
 

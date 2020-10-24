@@ -8,6 +8,9 @@ import { Point } from '../point/DBModels/point.model';
 import { User } from '../user/user.model';
 import { not } from 'rxjs/internal-compatibility';
 import { UpdateNotificationDto } from './dto/updateNotification.dto';
+import { IPointInterface } from '../point/interfaces/IPoint.interface';
+import { Position } from '../user/position.model';
+import { Department } from '../user/department.model';
 
 @Injectable()
 export class NotificationService {
@@ -25,7 +28,18 @@ export class NotificationService {
       const notification = await new this.notifyModel(createNotifyDTO).save();
       await this.saveNotificationInPoint(notification.points, notification._id);
       await this.reservedNumberModel.deleteOne({number: notification.number});
-      return notification;
+      return await this.notifyModel.findById(notification.id)
+        .populate([
+          {path: 'head', select: ['firstName', 'lastName', 'thirdName', '_id']},
+          {
+            path: 'from',
+            select: ['firstName', 'lastName', 'thirdName', '_id'],
+            populate: [
+              {path: 'position'},
+              {path: 'department'}
+            ]
+          },
+          {path: 'points'}]);
     } catch (e) {
       throw new BadRequestException(e.message);
     }
@@ -36,7 +50,19 @@ export class NotificationService {
       const notifyModel = new this.notifyModel(updateNotificationDTO);
       const updatedNotify = await this.notifyModel.findOneAndUpdate({
         _id: updateNotificationDTO._id
-      }, notifyModel);
+      },
+        notifyModel,
+        {new: true}).populate([
+        {path: 'head', select: ['firstName', 'lastName', 'thirdName', '_id']},
+        {
+          path: 'from',
+          select: ['firstName', 'lastName', 'thirdName', '_id'],
+          populate: [
+            {path: 'position'},
+            {path: 'department'}
+          ]
+        },
+        {path: 'points'}]);
       return updatedNotify;
     } catch (e) {
       throw new BadRequestException(e.message);

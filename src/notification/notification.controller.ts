@@ -33,9 +33,9 @@ export class NotificationController {
   @Post()
   @Permissions(PermissionsList.notification, PermissionsList.creator)
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
-  @UsePipes(NotifyPipe)
   async createNotification(@Body() createNotifyDTO: CreateNotificationDto, @Req() req): Promise<Notification> {
     createNotifyDTO.from = req.user._id;
+    createNotifyDTO.dateSend = new Date();
     const notification = await this.notifyService.createNotification(createNotifyDTO);
     return notification;
   }
