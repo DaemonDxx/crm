@@ -9,13 +9,14 @@ export class CreatePointPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata): CreatePointDto {
     const result = value;
 
+    if (result._id) {
+      delete result._id;
+    }
+
     result.dateCheck = ParseDate(value.dateCheck);
     result.lastDateCheck = ParseDate(value.lastDateCheck);
 
     result.power = parseFloat(value.power);
-
-    result.email = this.parseContactInfo(value.email.replace(/\s+/g,''));
-    result.phone = this.parseContactInfo(value.phone.replace(/\s+/g,''));
     return value;
   }
 
