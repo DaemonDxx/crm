@@ -15,9 +15,9 @@ export class DbService {
     return file;
   }
 
-  async findFileReportByModelID(id: string): Promise<FileReport> {
-    const fileReport: FileReport = await this.fileReportModel.findOne({byModelID: id});
-    return fileReport;
+  async findFileReportsByModelID(id: string): Promise<FileReport[]> {
+    const fileReports: FileReport[] = await this.fileReportModel.find({byModelID: id});
+    return fileReports;
   }
 
   async findByID(id: string): Promise<FileReport> {

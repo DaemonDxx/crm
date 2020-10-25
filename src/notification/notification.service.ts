@@ -119,7 +119,13 @@ export class NotificationService {
   }
 
   async reservedNumber(nextNumber: number) {
-    await new this.reservedNumberModel({number: nextNumber}).save();
+    const reservedNumber = {
+      number: nextNumber,
+      dateAt: new Date()
+    };
+    await this.reservedNumberModel.findOneAndUpdate({number: nextNumber}, reservedNumber, {
+      upsert: true
+    });
   }
 
 

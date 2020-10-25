@@ -15,8 +15,6 @@ export class ReportService {
   readonly factoryDriver: FactoryDrivers
   readonly storage: IStorage
 
-  @InjectModel('fileReport') private readonly fileReportModel: Model<FileReport>
-
   constructor(
     options: ServiceOptions,
     private readonly dbService?: DbService,
@@ -28,7 +26,6 @@ export class ReportService {
 
   async generateReport(template: ITemplate): Promise<FileReport> {
     const driver = this.factoryDriver.getDriver(template.typeFile);
-    console.log(template);
     const bufferTemplate: Buffer = await this.getBufferTemplate(template.templateFileName);
     template.setBuffer(bufferTemplate);
     const reportBuffer: Buffer = await driver.generateReport(template);
@@ -46,9 +43,9 @@ export class ReportService {
     return this.storage.readFile(fileReport.filename);
   }
 
-  async getFileReportByModelID(id: string): Promise<FileReport> {
-    const fileReport = await this.dbService.findFileReportByModelID(id);
-    return fileReport;
+  async getFileReportByModelID(id: string): Promise<FileReport[]> {
+    const fileReports = await this.dbService.findFileReportsByModelID(id);
+    return fileReports;
   }
 
   private async getBufferTemplate(filename: string): Promise<Buffer> {

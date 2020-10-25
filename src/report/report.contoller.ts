@@ -10,12 +10,11 @@ class FileController {
 
   constructor(private readonly reportService: ReportService,
               private readonly dbService: DbService
-  ) {
-  }
+  ) {}
 
   @Get()
-  async getFile(@Query('link') link: string, @Res() res: Response) {
-    const fileReport = await this.dbService.findByID(link);
+  async getFile(@Query('id') id: string, @Res() res: Response) {
+    const fileReport = await this.dbService.findByID(id);
     if (!fileReport) {
       throw new BadRequestException({}, 'Данного файла не существует');
     }
@@ -25,12 +24,9 @@ class FileController {
   }
 
   @Get('/link')
-  async getLinkByIDModel(@Query('id') id): Promise<FileReport> {
-    const file: FileReport = await this.reportService.getFileReportByModelID(id);
-    if (file) {
-      return file;
-    }
-    throw new BadRequestException({}, 'Файла для данной модели не существует');
+  async getLinkByIDModel(@Query('id') id): Promise<FileReport[]> {
+    const files: FileReport[] = await this.reportService.getFileReportByModelID(id);
+    return files || [];
   }
 
 }
