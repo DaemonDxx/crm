@@ -1,6 +1,6 @@
 interface ITemplate {
 
-  readonly fileName: string
+  readonly templateFileName: string
   data: any
   buffer: Buffer
   readonly fileNamePrefix: string

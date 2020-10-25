@@ -5,7 +5,7 @@ abstract class BaseTemplate implements ITemplate {
   buffer: Buffer;
   data: any;
   fileNamePrefix: string;
-  fileName: string;
+  templateFileName: string;
   typeFile: string;
 
   getData(): any {

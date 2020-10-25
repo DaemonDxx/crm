@@ -8,3 +8,8 @@ services:
       - 27017:27017
     volumes:
       - ./db_test/db:/data/db
+
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379

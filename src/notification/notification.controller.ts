@@ -20,13 +20,17 @@ import { NotificationPhoneTemplate } from '../report/Template/NotificationPhoneT
 import { ReportService } from '../report/report.service';
 import { FileReport } from '../report/DBModels/fileReport.model';
 import { UpdateNotificationDto } from './dto/updateNotification.dto';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 
 @Controller('/notification')
 export class NotificationController {
 
   constructor(private notifyService: NotificationService,
-              private readonly reportService: ReportService) {
+              private readonly reportService: ReportService,
+              @InjectQueue("report") private reportQueue: Queue
+              ) {
   }
 
 
@@ -37,6 +41,7 @@ export class NotificationController {
     createNotifyDTO.from = req.user._id;
     createNotifyDTO.dateSend = new Date();
     const notification = await this.notifyService.createNotification(createNotifyDTO);
+    await this.reportQueue.add("notification", notification);
     return notification;
   }
 
@@ -63,11 +68,19 @@ export class NotificationController {
   @Permissions(PermissionsList.notification, PermissionsList.creator)
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
   async numberReserved(): Promise<number> {
-    const number = await this.notifyService.findOldReservedNumbers();
-    if (!number) {
-      return await this.notifyService.reservingNumber();
+    let nextNumber: number;
+
+    const oldNumber = await this.notifyService.findReservedNumbers({
+      isActive: false
+    });
+
+    if (oldNumber.length !== 0) {
+       nextNumber = oldNumber[0].number;
+    } else {
+      nextNumber = await this.notifyService.generateNewNumber();
     }
-    return number;
+    await this.notifyService.reservedNumber(nextNumber);
+    return nextNumber;
   }
 
   @Get('/test')

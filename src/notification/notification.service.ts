@@ -6,11 +6,12 @@ import { Model, Schema, Types } from 'mongoose';
 import { ReservedNumber } from './DBModels/reservedNumber.model';
 import { Point } from '../point/DBModels/point.model';
 import { User } from '../user/user.model';
-import { not } from 'rxjs/internal-compatibility';
 import { UpdateNotificationDto } from './dto/updateNotification.dto';
-import { IPointInterface } from '../point/interfaces/IPoint.interface';
-import { Position } from '../user/position.model';
-import { Department } from '../user/department.model';
+
+
+interface FindOldReservedNumberOption {
+  isActive: boolean
+}
 
 @Injectable()
 export class NotificationService {
@@ -69,45 +70,62 @@ export class NotificationService {
     }
   }
 
-  async findOldReservedNumbers(): Promise<number> {
-    try {
-      const result = await this.reservedNumberModel.find({dateAt: {$lt: this.getDateOffsetHour(8)}}).sort({number: 1});
-      if (result.length === 0) {
-        return 0;
-      }
-      result[0].dateAt = new Date();
-      const updateReservedNumbers = await result[0].save();
-      return updateReservedNumbers.number;
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
+
+
+  async findReservedNumbers(options: FindOldReservedNumberOption): Promise<ReservedNumber[]> {
+      const keyParams = options.isActive?"$gt":"$lt";
+      const result = await this.reservedNumberModel
+        .find({
+          dateAt: {[keyParams]: this.getDateOffsetHour(8)}}
+        )
+        .sort({
+          number: 1
+        });
+      return result || [];
   }
 
-  async reservingNumber(): Promise<number> {
-    const aggregateOptions = [
+  async generateNewNumber(): Promise<number> {
+    let objWithNumberField: ReservedNumber[] | Notification[];
+
+    const activeReservedNumber = await this.findReservedNumbers({
+      isActive: true
+    });
+
+    if (activeReservedNumber.length !== 0) {
+      objWithNumberField = activeReservedNumber;
+    } else {
+      objWithNumberField = await this.findLastNotification();
+    }
+
+    if (objWithNumberField.length !== 0) {
+      return this.calculateNextNumber(objWithNumberField[0]);
+    } else {
+      return 1;
+    }
+
+  }
+
+  async findLastNotification(): Promise<Notification[]> {
+    const notifys = await this.notifyModel.aggregate([
       {$sort: {number: -1}},
-      {$limit: 1},
-      {$project: {_id: 0, number: 1}}
-    ];
-    try {
-      const reservedNumber = await this.reservedNumberModel.find({dateAt: {$gt: this.getDateOffsetHour(8)}}).sort({number: 1});
-
-      const result = await (reservedNumber? this.reservedNumberModel.aggregate(aggregateOptions): this.notifyModel.aggregate(aggregateOptions));
-
-      const nextNumber = parseInt(result[0].number)+1;
-      const reservingNumber = await new this.reservedNumberModel({number: nextNumber}).save();
-
-      return nextNumber;
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
-
+      {$limit: 5},
+      {$project: {number: 1}}
+    ]);
+    return notifys || [];
   }
+
+  calculateNextNumber(obj: ReservedNumber | Notification ): number {
+    return obj.number+1;
+  }
+
+  async reservedNumber(nextNumber: number) {
+    await new this.reservedNumberModel({number: nextNumber}).save();
+  }
+
 
   async saveNotificationInPoint(arrayPoints: Schema.Types.ObjectId[], notifyId: Schema.Types.ObjectId) {
     for (const point of arrayPoints) {
       const result = await this.pointModel.findByIdAndUpdate(point, {notification: notifyId});
-      console.log(result);
     }
   }
 

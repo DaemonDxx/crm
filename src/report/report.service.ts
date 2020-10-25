@@ -14,16 +14,21 @@ export class ReportService {
 
   readonly factoryDriver: FactoryDrivers
   readonly storage: IStorage
+
   @InjectModel('fileReport') private readonly fileReportModel: Model<FileReport>
 
-  constructor(options: ServiceOptions, private readonly dbService?: DbService) {
+  constructor(
+    options: ServiceOptions,
+    private readonly dbService?: DbService,
+
+  ) {
     this.storage = this.factoryStorage(options.storage);
     this.factoryDriver = new FactoryDrivers();
   }
 
   async generateReport(template: ITemplate): Promise<FileReport> {
     const driver = this.factoryDriver.getDriver(template.typeFile);
-    const bufferTemplate: Buffer = await this.getBufferTemplate(template.fileName);
+    const bufferTemplate: Buffer = await this.getBufferTemplate(template.templateFileName);
     template.setBuffer(bufferTemplate);
     const reportBuffer: Buffer = await driver.generateReport(template);
     const filename: string = await this.storage.saveFile(reportBuffer, template);

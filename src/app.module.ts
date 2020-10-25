@@ -10,6 +10,7 @@ import { PointModule } from './point/point.module';
 import { NotificationModule } from './notification/notification.module';
 import { TaskModule } from './task/task.module';
 import { ReportModule } from './report/report.module';
+import { QueueModule } from './queue/queue.module';
 
 
 @Module({
@@ -34,6 +35,7 @@ import { ReportModule } from './report/report.module';
     PointModule,
     NotificationModule,
     TaskModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService],

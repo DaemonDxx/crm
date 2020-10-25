@@ -1,19 +1,21 @@
-import { Module } from '@nestjs/common';
-import { QueueService } from './queue.service';
-import { QueueController } from './queue.controller';
-import { RabbitMQModule } from '@nestjs-plus/rabbitmq';
+import { Global, Module } from '@nestjs/common';
+import {BullModule} from '@nestjs/bull';
 
+@Global()
 @Module({
   imports: [
-    RabbitMQModule.forRoot({
-      exchanges: [{
-       name: 'work',
-       type: 'topic'
-         }],
-      uri: 'amqp://rabbitmq:rabbitmq@localhost:5672'
-  })],
-  providers: [QueueService],
-  controllers: [QueueController],
-  exports: [QueueService]
-})
+    BullModule.registerQueue({
+      name: "report",
+      redis: {
+        host: 'localhost',
+        port: 6379
+      }
+    })
+  ],
+  exports: [
+    BullModule
+  ]
+  },
+
+)
 export class QueueModule {}
