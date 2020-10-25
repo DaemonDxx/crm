@@ -14,8 +14,12 @@ export class ConsumerService {
 
   @Process("notification")
   async generateNotificationReport(job: Job<INotificationInterface>) {
-      const template: ITemplate = TemplateFactory.CreateNotificationTemplate(job.data);
-      const fileReport = await this.reportService.generateReport(template);
+      try {
+        const template: ITemplate = TemplateFactory.CreateNotificationTemplate(job.data);
+        const fileReport = await this.reportService.generateReport(template);
+      } catch (e) {
+        console.log(e);
+      }
       await job.remove();
   }
 

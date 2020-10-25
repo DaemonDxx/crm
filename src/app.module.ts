@@ -21,7 +21,7 @@ import { QueueModule } from './queue/queue.module';
         type: 'LOCALHOST',
         storageOptions: {
           pathTemplate: './templates/',
-          pathSaveIn: './'
+          pathSaveIn: './reports'
         }
       }
     }),

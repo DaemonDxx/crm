@@ -79,6 +79,7 @@ export class NotificationController {
     } else {
       nextNumber = await this.notifyService.generateNewNumber();
     }
+
     await this.notifyService.reservedNumber(nextNumber);
     return nextNumber;
   }

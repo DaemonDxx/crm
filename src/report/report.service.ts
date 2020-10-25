@@ -28,6 +28,7 @@ export class ReportService {
 
   async generateReport(template: ITemplate): Promise<FileReport> {
     const driver = this.factoryDriver.getDriver(template.typeFile);
+    console.log(template);
     const bufferTemplate: Buffer = await this.getBufferTemplate(template.templateFileName);
     template.setBuffer(bufferTemplate);
     const reportBuffer: Buffer = await driver.generateReport(template);

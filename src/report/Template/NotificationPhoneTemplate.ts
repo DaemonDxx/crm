@@ -1,5 +1,6 @@
 import { BaseNotificationTemplate } from './BaseNotificationTemplate';
 import { INotificationInterface } from '../../notification/interfaces/INotification.interface';
+import moment from 'moment/moment';
 
 class NotificationPhoneTemplate extends BaseNotificationTemplate {
 
@@ -22,15 +23,6 @@ class NotificationPhoneTemplate extends BaseNotificationTemplate {
     this.data.type = 'phone';
   }
 
-  generateFileNamePrefix(notification: INotificationInterface): string {
-    let prefix: string;
-    switch (notification.type) {
-      case "phone" : prefix = "Т"; break;
-      case "email" : prefix = "Е"; break;
-      case "letter" : prefix = "П"; break;
-    }
-    return `Уведомление ${prefix}-${notification.number} от ${notification.dateSend}`
-  }
 
 }
 

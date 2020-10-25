@@ -5,7 +5,7 @@ import { IPointInterface } from '../../point/interfaces/IPoint.interface';
 
 
 export interface INotificationInterface {
-  _id: string
+  _id: any
   points: IPointInterface[]
   type: string
   number: number
