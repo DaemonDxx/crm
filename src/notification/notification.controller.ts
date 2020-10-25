@@ -16,7 +16,7 @@ import { PermissionGuard } from '../Utils/permission.guard';
 import { Permissions } from '../Utils/permissions.decorator';
 import PermissionsList from '../Utils/PermissionsList';
 import { NotifyPipe } from './notify.pipe';
-import { NotificationPhoneTemplate } from '../report/Template/NotificationPhoneTemplate';
+import { NotificationPhoneTemplate } from '../report/Template/Notification/NotificationPhoneTemplate';
 import { ReportService } from '../report/report.service';
 import { FileReport } from '../report/DBModels/fileReport.model';
 import { UpdateNotificationDto } from './dto/updateNotification.dto';

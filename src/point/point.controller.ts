@@ -46,13 +46,9 @@ export class PointController {
   @Get()
   @Permissions(PermissionsList.point, PermissionsList.creator)
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
-  async getPointsByName(@Query('name') name): Promise<any> {
-    console.log(name);
-    const points = await this.pointService.findPointByName(name);
-    if (!points) {
-      return { points: [] };
-    }
-    return { points };
+  async getPointsByContract(@Query('contract') contract: string): Promise<Point[]> {
+    const points = await this.pointService.findPointByContract(String(contract));
+    return points || [];
   }
 
   @Post('/result')

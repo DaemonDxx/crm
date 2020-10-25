@@ -1,8 +1,8 @@
 
-import { INotificationInterface } from '../../notification/interfaces/INotification.interface';
+import { INotificationInterface } from '../../../notification/interfaces/INotification.interface';
 import * as moment from 'moment';
-import { BaseTemplate } from './BaseTemplate';
-import { GetFullNameUser } from '../common/GetFullNameUserFunction';
+import { BaseTemplate } from '../BaseTemplate';
+import { GetFullNameUser } from '../../common/GetFullNameUserFunction';
 import { Get } from '@nestjs/common';
 
 class BaseNotificationTemplate extends BaseTemplate{

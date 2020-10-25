@@ -1,6 +1,6 @@
 import { BaseNotificationTemplate } from './BaseNotificationTemplate';
-import { INotificationInterface } from '../../notification/interfaces/INotification.interface';
-import moment from 'moment/moment';
+import { INotificationInterface } from '../../../notification/interfaces/INotification.interface';
+
 
 class NotificationPhoneTemplate extends BaseNotificationTemplate {
 

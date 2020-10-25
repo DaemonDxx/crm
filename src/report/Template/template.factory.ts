@@ -1,5 +1,5 @@
 import { INotificationInterface } from '../../notification/interfaces/INotification.interface';
-import { NotificationPhoneTemplate } from './NotificationPhoneTemplate';
+import { NotificationPhoneTemplate } from './Notification/NotificationPhoneTemplate';
 import { ITemplate } from './interface/ITemplate';
 
 export class TemplateFactory {
