@@ -7,40 +7,44 @@ import { CreatePointDto } from './dto/createPoint.dto';
 @Injectable()
 export class PointService {
 
-  constructor(@InjectModel('Point') private pointModel: Model<Point>
-              ) {
+  constructor(@InjectModel('Point') private pointModel: Model<Point>) {
   }
 
   async createPoint(createPointDTO: CreatePointDto): Promise<Point> {
-    const points = await this.pointModel.find({numberDevice: createPointDTO.numberDevice}).lean();
+    if (await this._hasDuplicate(createPointDTO)) {
+      throw new Error(`Точка ${createPointDTO.numberDevice} на данную дату (${createPointDTO.dateCheck}) уже сохранена`);
+    }
+    const newPoint = this._createModel(createPointDTO);
+    return this.pointModel.create(newPoint);
+  }
 
-    if (points) {
+  async _hasDuplicate(dto: CreatePointDto): Promise<boolean> {
+    const points = await this.pointModel.find({numberDevice: dto.numberDevice});
+
+    if (points.length !== 0) {
       for (const point of points) {
-        if (point.dateCheck === createPointDTO.dateCheck) {
-          throw new BadRequestException(`Точка задвоена ${point.numberDevice}`)
+        if (point.dateCheck === dto.dateCheck) {
+          return true;
         }
       }
     }
 
-    try {
-      return await new this.pointModel(createPointDTO).save();
-    } catch (e) {
-      throw new BadRequestException(e.message);
-    }
-
-
+    return false;
   }
 
-  async findPointsByDate(date: Date): Promise<any> {
+  _createModel(dto: CreatePointDto): Point {
+    return new this.pointModel(dto);
+  }
+
+  async findPointsByDate(date: Date): Promise<Point[]> {
     const points = await this.pointModel.find({dateCheck: date})
-      .populate('notification')
-      .lean();
+      .populate('notification');
     return points;
   }
 
   async findPointByContract(contract: string): Promise<Point[]> {
     const points = await this.pointModel.find({numberContract: contract});
-    return points || [];
+    return points;
   }
 
   async findPointByID(pointID: string): Promise<Point> {
