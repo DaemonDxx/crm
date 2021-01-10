@@ -25,7 +25,7 @@ import EventPayloadDTO from '../events/classes/EventPayloadDTO';
 import { ITaskInterface } from './task.interface';
 import { TaskTemplate } from '../report/Template/TaskTemplate';
 import { XLSXReportDriver } from '../report/Driver/XLSXReportDriver';
-import { ParseDatePipe } from '../Utils/parseDate.pipe';
+import { QueryDatePipe } from '../Utils/queryDatePipe';
 import * as path from 'path';
 import { STATUS_CODES } from 'http';
 
@@ -56,7 +56,7 @@ export class TaskController {
   @Get()
   @Permissions(PermissionsList.creator)
   @UseGuards(AuthGuard('jwt'), PermissionGuard)
-  async getTaskByDate(@Query('date', ParseDatePipe) date: any, @Req() req) {
+  async getTaskByDate(@Query('date', QueryDatePipe) date: any, @Req() req) {
       const task = await this.taskService.getTaskByDayAndUserID(date, req.user._id);
       return task;
   }

@@ -42,8 +42,11 @@ export class PointService {
     return points;
   }
 
-  async findPointByContract(contract: string): Promise<Point[]> {
-    const points = await this.pointModel.find({numberContract: contract});
+  async findPointByContract(contract: string, queryDate: any): Promise<Point[]> {
+    const points = await this.pointModel.find({
+      numberContract: contract,
+      dateCheck: queryDate
+    });
     return points;
   }
 

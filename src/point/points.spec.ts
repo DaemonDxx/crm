@@ -5,82 +5,103 @@ import { getModelToken } from '@nestjs/mongoose';
 import { CreatePointDto } from './dto/createPoint.dto';
 import { ResultCheckService } from './resultCheck.service';
 import { Point } from './DBModels/point.model';
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, Res } from '@nestjs/common';
+import { ResultCheck } from './DBModels/result-check.model';
+import { CreateResultDto } from './dto/createResult.dto';
+
 
 
 describe("Тестирование модуля Points", () => {
 
+  let pointsService: PointService;
+  let pointsController: PointController;
+  let resultCheckService: ResultCheckService;
+
+  const dbMock = {
+    create: function(dto) {
+      return {};
+    },
+    find: function(number) {
+      return {}
+    }
+  }
+
+  const createPointDto: CreatePointDto = {
+    address: '',
+    area: '',
+    contract: '',
+    dateCheck: undefined,
+    email: [],
+    lastDateCheck: undefined,
+    name: '',
+    numberContract: '',
+    numberDevice: '',
+    objectDescription: '',
+    phone: [],
+    pointNumber: '',
+    power: 0
+
+  };
+  const resultCheckDto: CreateResultDto = {
+    description: '',
+    pointID: 'sdfsdf',
+    result: ''
+  };
+
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      providers: [
+        ResultCheckService,
+        PointService,
+        {
+          provide: getModelToken('Point'),
+          useValue: dbMock
+        },
+        {
+          provide: getModelToken('ResultCheck'),
+          useValue: dbMock
+        },
+      ],
+      controllers: [PointController]
+    }).compile();
+
+    pointsService = moduleRef.get<PointService>(PointService);
+    pointsController = moduleRef.get<PointController>(PointController);
+    resultCheckService = moduleRef.get<ResultCheckService>(ResultCheckService);
+  });
+
+
   describe("Point Service", () => {
 
-    let pointsService: PointService;
-    let pointsController: PointController;
-    const pointModelMock = {
-      find: (dto) => {
-        if (dto.number === 1)
-          return [dto];
-        return []
-      },
-      create: (model) => {
-        return {}
-      }
-    }
     const newID = "new";
 
-    let pointDto;
-
     beforeAll(async () => {
-      pointDto = {
-        address: '',
-        area: '',
-        contract: '',
-        dateCheck: new Date(),
-        email: [],
-        lastDateCheck: undefined,
-        name: '',
-        numberContract: '',
-        numberDevice: '123123',
-        objectDescription: '',
-        phone: [],
-        pointNumber: '',
-        power: 13
-      }
-      const moduleRef = await Test.createTestingModule({
-        providers: [
-          PointService,
-          {
-            provide: getModelToken('Point'),
-            useValue: pointModelMock
-          },
-        ],
-        controllers: [PointController]
-      }).compile();
-      pointsService = moduleRef.get<PointService>(PointService);
-      pointsController = moduleRef.get<PointController>(PointController);
-
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       jest.spyOn(pointsService, "_createModel").mockImplementation((dto) => {
         return dto;
       });
-      jest.spyOn(pointModelMock, "create").mockImplementation((model) => {
+      jest.spyOn(dbMock, "create").mockImplementation((model) => {
         return {...model, _id: newID};
       });
 
     });
 
     it("Должен вернуть переданный объект с добавленным полем _id", async () => {
-      expect(await pointsService.createPoint(pointDto)).toEqual({...pointDto, _id: newID});
+      jest.spyOn(dbMock, "find").mockImplementation((number) => {
+        return [];
+      });
+      expect(await pointsService.createPoint(createPointDto)).toEqual({...createPointDto, _id: newID});
     });
 
 
     it("Должен выбросить ошибку", async () => {
-      pointDto.number = 1;
       jest.spyOn(pointsService, "_hasDuplicate").mockImplementationOnce(async (dto) => {
         return true;
       });
       let point;
       try {
-        point = await pointsService.createPoint(pointDto);
+        point = await pointsService.createPoint(createPointDto);
       } catch (e) {
         expect(e).toBeDefined();
       }
@@ -91,41 +112,6 @@ describe("Тестирование модуля Points", () => {
   });
 
   describe("Point controller", () => {
-    let pointsService: PointService;
-    let pointsController: PointController;
-    const dbMock = {
-    }
-    const dto: CreatePointDto = {
-      address: '',
-      area: '',
-      contract: '',
-      dateCheck: undefined,
-      email: [],
-      lastDateCheck: undefined,
-      name: '',
-      numberContract: '',
-      numberDevice: '',
-      objectDescription: '',
-      phone: [],
-      pointNumber: '',
-      power: 0
-
-    };
-
-    beforeAll(async () => {
-      const moduleRef = await Test.createTestingModule({
-        providers: [
-          PointService,
-          {
-            provide: getModelToken('Point'),
-            useValue: dbMock
-          }
-        ],
-        controllers: [PointController]
-      }).compile();
-      pointsService = moduleRef.get<PointService>(PointService);
-      pointsController = moduleRef.get<PointController>(PointController);
-    });
 
     it("Должен вернуть объект Point с поле _id",async () => {
       const _id = "id";
@@ -137,7 +123,7 @@ describe("Тестирование модуля Points", () => {
       });
       let point;
       try {
-        point = await pointsController.createPoint(dto);
+        point = await pointsController.createPoint(createPointDto);
       } catch (e) {
         expect(e).toBeUndefined();
       }
@@ -149,9 +135,29 @@ describe("Тестирование модуля Points", () => {
         throw new Error();
         return new Point();
       });
-      await expect(pointsController.createPoint(dto)).rejects.toThrowError(new ForbiddenException());
+      await expect(pointsController.createPoint(createPointDto)).rejects.toThrowError(new ForbiddenException());
     });
 
+    it("Должен вернуть тот же объект Point с добавленным полем ResultCheck", async () => {
+      const _idResultCheck = "idresult";
+      jest.spyOn(resultCheckService, "createResultCheck").mockImplementationOnce(async (resultDto) => {
+        const result = new ResultCheck();
+        result._id = _idResultCheck;
+        return result;
+      });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      jest.spyOn(pointsService, 'findPointByID').mockImplementationOnce(async (_id) => {
+        return {_id: _id};
+      });
+      try {
+        const point = await pointsController.createResultCheck(resultCheckDto);
+        expect(point).toHaveProperty("resultCheck", {_id: _idResultCheck});
+      } catch (e) {
+        console.log(e);
+        expect(e).toBeUndefined();
+      }
+    });
 
 
 
